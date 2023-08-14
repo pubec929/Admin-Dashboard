@@ -1,0 +1,18 @@
+Components Tree:
+    - Main page:
+        > Header
+        > Left Sidebar
+        > Main Content(Can differentiate based on what tab clicked)
+             > Top bar
+                > Text and button
+            > Container
+                > Search bar with icons
+                > Table
+                    > Element(clickable)
+                
+        > Right Sidebar(Toggled)
+            > Header
+                > Caption and close button
+            > Body
+                > Toggled Captions
+                    > Text and Slide toggles
