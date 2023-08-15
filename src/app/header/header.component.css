@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    border-bottom: 1px solid lightgrey;
+}
+
+.name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+p {
+    margin: 0;
+}
+
+.user-btn {
+    /* height: 50px; */
+    background-color: #5691d1;
+}
+
+
+/* .user-info {
+    background-color: #5691d1;
+    border: none;
+    border-radius: 2;
+
+}
+
+.user-logo {
+    color: white;
+} */

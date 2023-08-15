@@ -1,7 +1,10 @@
 Components Tree:
     - Main page:
         > Header
+            > Logo and Name on the left side, Account on the right
         > Left Sidebar
+            > Routing Tree(Fields can be toggled)
+                > Other Tabs 
         > Main Content(Can differentiate based on what tab clicked)
              > Top bar
                 > Text and button
@@ -9,6 +12,7 @@ Components Tree:
                 > Search bar with icons
                 > Table
                     > Element(clickable)
+            > Paginator
                 
         > Right Sidebar(Toggled)
             > Header
@@ -16,3 +20,15 @@ Components Tree:
             > Body
                 > Toggled Captions
                     > Text and Slide toggles
+
+State and Data:
+    - User Information
+        > Light and dark mode
+    - Table data
+        > Name, Status, Last Update, Version, Tag, Organisationunit
+    - Paginator
+        > Current Site, number of total entries
+    - Tabs
+        > On which tab is the User
+    - Right Side bar
+        > Information of the clicked element
