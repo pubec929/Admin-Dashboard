@@ -32,3 +32,8 @@ State and Data:
         > On which tab is the User
     - Right Side bar
         > Information of the clicked element
+
+Überschrift: 16px Font-weight: 700
+Text: Font-size: 14px Font-weight: 400
+Icons: Font-size: 16px Font-weight: 400
+Strich: rgb(151, 151, 151), width: 100%

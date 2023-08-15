@@ -8,15 +8,18 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
 import { MainContentComponent } from './main-content/main-content.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatExpansionModule} from "@angular/material/expansion";
+import { NavElementComponent } from './side-bar/nav-element/nav-element.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     MainContentComponent,
-    SideBarComponent
+    SideBarComponent,
+    NavElementComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,8 @@ import {MatButtonModule} from '@angular/material/button';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
