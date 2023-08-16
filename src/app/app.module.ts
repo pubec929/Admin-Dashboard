@@ -12,6 +12,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule} from "@angular/material/expansion";
 import { NavElementComponent } from './side-bar/nav-element/nav-element.component'
+import { MatTableModule } from '@angular/material/table';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,7 @@ import { NavElementComponent } from './side-bar/nav-element/nav-element.componen
     HeaderComponent,
     MainContentComponent,
     SideBarComponent,
-    NavElementComponent
+    NavElementComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +33,12 @@ import { NavElementComponent } from './side-bar/nav-element/nav-element.componen
     MatSlideToggleModule,
     MatIconModule,
     MatButtonModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTableModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

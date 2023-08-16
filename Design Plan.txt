@@ -1,6 +1,6 @@
 Components Tree:
     - Main page:
-        > Header
+        > Header ✅
             > Logo and Name on the left side, Account on the right
         > Left Sidebar
             > Routing Tree(Fields can be toggled)
@@ -14,7 +14,7 @@ Components Tree:
                     > Element(clickable)
             > Paginator
                 
-        > Right Sidebar(Toggled)
+        > Right Sidebar(Toggled) ✅
             > Header
                 > Caption and close button
             > Body
@@ -37,3 +37,8 @@ State and Data:
 Text: Font-size: 14px Font-weight: 400
 Icons: Font-size: 16px Font-weight: 400
 Strich: rgb(151, 151, 151), width: 100%
+
+Research:
+    - Difference between classes and interfaces
+    - how does ngFor work?
+    - Material UI, Table and Paginator

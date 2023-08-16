@@ -14,6 +14,8 @@
 .main {
   grid-area: main;
   background-color: #f4f5f7;
+  display: flex;
+  justify-content: center;
 }
 
 .side-bar-right {
