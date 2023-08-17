@@ -2,6 +2,7 @@ import { Component, VERSION, ElementRef } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
  
 interface tableEntry{
+  id:number,
   name: string,
   status: string,
   lastUpdate: string,
@@ -31,39 +32,40 @@ export class MainContentComponent {
   constructor(private elRef: ElementRef, private sanitizer: DomSanitizer) {
   }
 
-  test() {
-    alert("Hello")
-  }
+  isClicked = 0; // id of the row that was clicked
+
+  tmp = 1;
+
   data: tableEntry[] = [
-    {name: "Aerified", status: "Deinstallation geplant", lastUpdate: "01.01.2000, 01:00:20", version: "20230124_1155", tag: "Test", organisationUnit: "...ATA Endpoint View Inc./A-OU"},
-    {name: "Simon", status: "online", lastUpdate: "1", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "2", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "3", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "4", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "5", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "6", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "7", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "8", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "9", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "10", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "11", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "12", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "13", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "14", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "15", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "16", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "17", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "18", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "19", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "20", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "21", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "22", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "23", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "24", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "25", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "26", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "27", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {name: "Simon", status: "online", lastUpdate: "28", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Aerified", status: "Deinstallation geplant", lastUpdate: "01.01.2000, 01:00:20", version: "20230124_1155", tag: "Test", organisationUnit: "...ATA Endpoint View Inc./A-OU"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "1", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "2", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "3", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "4", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "5", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "6", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "7", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "8", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "9", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "10", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "11", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "12", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "13", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "14", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "15", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "16", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "17", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "18", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "19", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "20", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "21", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "22", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "23", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "24", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "25", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "26", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "27", version: "1.0.1", tag: "", organisationUnit: "1412"},
+    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "28", version: "1.0.1", tag: "", organisationUnit: "1412"},
   ]
   displayedColumns = ["Name", "Status", "lastUpdate", "Version", "Tag", "Organisationseinheit"]
 
@@ -78,7 +80,7 @@ export class MainContentComponent {
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25, this.length];
 
-  hidePageSize = false;
+  hze = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
@@ -94,14 +96,8 @@ export class MainContentComponent {
     this.visibleData = getVisibleData(this.data, this.pageSize, this.pageIndex)
   }
 
-  ngAfterViewInit() {
-    const tableRows = this.elRef.nativeElement
-      .querySelectorAll("tr")
-    
-    for (let i = 0; i < tableRows.length; i++) {
-      console.log(tableRows[i])
-      tableRows[i].addEventListener("click", this.test)
-    }
-
+  rowSelected(item: any){
+    console.log(item);
+    this.isClicked = item.id;
   }
 }

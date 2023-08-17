@@ -42,3 +42,14 @@ Research:
     - Difference between classes and interfaces
     - how does ngFor work?
     - Material UI, Table and Paginator
+
+
+Todo-Liste(16.08.2023/12:08):
+    -> Scrollbar stylen ✅
+    -> Rechte Sidebar 
+    -> Light und Dark Mode
+    -> User Information Dropdown
+    -> Benutzer Icon raussuchen
+    -> Paginator Label Text ändern
+    -> Table Row Hover effect: Blue outline ✅
+    -> Table Row clicked effect: #cddef2 background, use typescript ✅
