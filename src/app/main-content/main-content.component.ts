@@ -76,7 +76,7 @@ export class MainContentComponent {
   ]
 
   length = this.data.length;
-  pageSize: any = 10;
+  pageSize: any = 25;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25, this.length];
 
@@ -97,7 +97,6 @@ export class MainContentComponent {
   }
 
   rowSelected(item: any){
-    console.log(item);
-    this.isClicked = item.id;
+    this.isClicked = item.id !== this.isClicked ? item.id : 0;
   }
 }

@@ -1,1 +1,57 @@
-<p>right-sidebar works!</p>
+<div class="container">
+    <div class="header">
+        <p>Details</p>
+        <mat-icon>
+            close
+        </mat-icon>
+    </div>
+    <div class="main-content">
+        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
+            <mat-expansion-panel-header class="expansion-header">
+              <mat-panel-title class="panel-title">
+                Endpunkt
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <app-details-element key="Name" value="desktop42.gdata.de"></app-details-element>
+                <app-details-element key="Status" value="Überwacht"></app-details-element>
+                <app-details-element key="ID" value="k89fads099fs9gsah90bc98n7jf8a9usf8s9d"></app-details-element>
+                <app-details-element key="Kunde" value="G DATA Endpoint View Inc."></app-details-element>
+                <app-details-element key="Betriebsystem" value="Windows 11 Enterprise 22H2"></app-details-element>
+                <app-details-element key="Organisationseinheit" value="Verschieben"></app-details-element>
+                <app-details-element key="Tag" value=""></app-details-element>
+            </div>
+          </mat-expansion-panel>
+        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
+            <mat-expansion-panel-header class="expansion-header">
+              <mat-panel-title class="panel-title">
+                Agent
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                <app-details-element key="ID" value="as9f89gh8ad9gh7s8d7g8d7f897gs8a9sj132423"></app-details-element>
+                <app-details-element key="Setup ID" value="24hjkh23h5hkj9jh08h7gjoihfoigu9090"></app-details-element>
+                <app-details-element key="Version" value="20230124_1155"></app-details-element>
+                <app-details-element key="Zuletzt gesehen" value="24.01.2023, 13:09:02"></app-details-element>
+                <app-details-element key="Letztes Update" value="01.01.2000, 01:00:03"></app-details-element>
+                <app-details-element key="Analyst Session" value="Inaktiv"></app-details-element>
+            </div>
+          </mat-expansion-panel>
+        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
+            <mat-expansion-panel-header class="expansion-header">
+              <mat-panel-title class="panel-title">
+                Agent Konfiguration
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div>
+                
+            </div>
+          </mat-expansion-panel>
+    </div>
+    <div class="footer">
+        <button mat-flat-button color="warn" >
+            <mat-icon>delete</mat-icon>
+            <p>Agent deinstallieren</p>
+        </button>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <div class="container">
-    <mat-expansion-panel class="expansion-panel">
-        <mat-expansion-panel-header>
+    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+        <mat-expansion-panel-header class="expansion-header">
           <mat-panel-title>
             <span class="panel-title">365 Managed EDR</span>
           </mat-panel-title>
@@ -15,8 +15,8 @@
         </div>
     </mat-expansion-panel>
 
-    <mat-expansion-panel class="expansion-panel">
-      <mat-expansion-panel-header>
+    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+      <mat-expansion-panel-header class="expansion-header">
         <mat-panel-title>
           <span class="panel-title">Exchange</span>
         </mat-panel-title>
@@ -26,14 +26,14 @@
         </div>
   </mat-expansion-panel>
 
-  <mat-expansion-panel class="expansion-panel">
-    <mat-expansion-panel-header>
+  <mat-expansion-panel class="expansion-panel" [expanded]="true">
+    <mat-expansion-panel-header class="expansion-header">
       <mat-panel-title>
         <span class="panel-title">Verwalten</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="nav-container">
-        <app-nav-element iconName="dashboard" text="Benutzer" [isFilled]="true"></app-nav-element>
+        <app-nav-element iconName="supervised_user_circle" text="Benutzer"></app-nav-element>
         <app-nav-element iconName="assignment_ind" text="Rollen"></app-nav-element>
         <app-nav-element iconName="account_tree" text="Organisationseinheiten"></app-nav-element>
     </div>

@@ -1,0 +1,15 @@
+.element-container {
+    display: grid;
+    grid-template-columns: minmax(50%, 1fr) minmax(50%, 1fr);
+    width: 100%;
+    word-wrap: break-word;
+}
+
+.key{
+    color: lightgrey;
+}
+
+p {
+    margin: 0 !important;
+    line-height: 20px;
+}

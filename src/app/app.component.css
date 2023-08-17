@@ -16,6 +16,7 @@
   background-color: #f4f5f7;
   display: flex;
   justify-content: center;
+  border-top: 1px solid lightgrey;
 }
 
 .side-bar-right {
@@ -30,7 +31,7 @@
   height: 100%;
   display: grid;
   grid-template-rows: 64px 1fr;
-  grid-template-columns: 256px 1fr 256px;
+  grid-template-columns: 256px 1fr 404px;
   grid-template-areas: 
     'header header header'
     'left main right';

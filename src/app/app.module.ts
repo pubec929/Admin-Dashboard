@@ -18,6 +18,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
+import { DetailsElementComponent } from './right-sidebar/details-element/details-element.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
     SideBarComponent,
     NavElementComponent,
     RightSidebarComponent,
+    DetailsElementComponent,
   ],
   imports: [
     BrowserModule,

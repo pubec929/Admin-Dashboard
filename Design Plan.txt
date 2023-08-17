@@ -49,7 +49,16 @@ Todo-Liste(16.08.2023/12:08):
     -> Rechte Sidebar 
     -> Light und Dark Mode
     -> User Information Dropdown
-    -> Benutzer Icon raussuchen
+    -> Benutzer Icon raussuchen ✅
     -> Paginator Label Text ändern
     -> Table Row Hover effect: Blue outline ✅
     -> Table Row clicked effect: #cddef2 background, use typescript ✅
+
+Questions and problems(17.08.23/13:20):
+    - How does custom keyboard navigation in Angular work?
+        for example: Closing the right sidebar with pressing escape
+    - The right sidebar must know state from other Components!!!
+        - The table entry specific data
+        - And the state of "isClicked"
+    - For the sidebar some additional mock data is needed
+    
