@@ -1,17 +1,7 @@
-import { Component, VERSION, ElementRef } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
- 
-interface tableEntry{
-  id:number,
-  name: string,
-  status: string,
-  lastUpdate: string,
-  version: string,
-  tag: string,
-  organisationUnit: string
-}
+import { Component, EventEmitter, Output, Input} from '@angular/core';
+import { EndpointDataService } from '../services/endpoint-data.service';
 
-function getVisibleData(data: tableEntry[], pageSize: number, pageIndex: number) {
+function getVisibleData(data: any, pageSize: number, pageIndex: number) {
   return data.slice(pageSize  * pageIndex, pageSize * pageIndex + pageSize);
 }
 
@@ -29,44 +19,14 @@ function getVisibleData(data: tableEntry[], pageSize: number, pageIndex: number)
   styleUrls: ['./main-content.component.css']
 })
 export class MainContentComponent {
-  constructor(private elRef: ElementRef, private sanitizer: DomSanitizer) {
+  @Output() itemSelected : EventEmitter<number> = new EventEmitter();
+  @Input() selectedId:number = 0;
+
+  constructor(public service: EndpointDataService) {
   }
 
-  isClicked = 0; // id of the row that was clicked
-
-  tmp = 1;
-
-  data: tableEntry[] = [
-    {id:this.tmp++, name: "Aerified", status: "Deinstallation geplant", lastUpdate: "01.01.2000, 01:00:20", version: "20230124_1155", tag: "Test", organisationUnit: "...ATA Endpoint View Inc./A-OU"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "1", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "2", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "3", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "4", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "5", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "6", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "7", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "8", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "9", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "10", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "11", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "12", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "13", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "14", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "15", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "16", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "17", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "18", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "19", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "20", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "21", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "22", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "23", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "24", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "25", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "26", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "27", version: "1.0.1", tag: "", organisationUnit: "1412"},
-    {id:this.tmp++, name: "Simon", status: "online", lastUpdate: "28", version: "1.0.1", tag: "", organisationUnit: "1412"},
-  ]
+  isDownloading = false;
+  
   displayedColumns = ["Name", "Status", "lastUpdate", "Version", "Tag", "Organisationseinheit"]
 
   selectOptions = [
@@ -75,28 +35,33 @@ export class MainContentComponent {
     {value: "option-2", viewValue: "Test 3"}
   ]
 
-  length = this.data.length;
+  length = this.service.data.length;
   pageSize: any = 25;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25, this.length];
 
-  hze = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
   pageEvent: any;
 
-  visibleData: tableEntry[] = getVisibleData(this.data, this.pageSize, this.pageIndex)
+  visibleData: any = getVisibleData(this.service.data, this.pageSize, this.pageIndex)
+
+  download(_:any) {
+    this.isDownloading = !this.isDownloading;
+  }
 
   handlePageEvent(e: any) {
     this.pageEvent = e;
     this.length = e.length;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-    this.visibleData = getVisibleData(this.data, this.pageSize, this.pageIndex)
+    this.visibleData = getVisibleData(this.service.data, this.pageSize, this.pageIndex)
   }
 
   rowSelected(item: any){
-    this.isClicked = item.id !== this.isClicked ? item.id : 0;
+    // this.service.isClicked = item.id !== this.service.isClicked ? item.id : 0;
+    this.selectedId = item.id !== this.selectedId ? item.id : 0;
+    this.itemSelected.emit(this.selectedId);
   }
 }

@@ -68,3 +68,7 @@ p {
     padding-top: 1.5rem;
     padding-bottom: 10px;
 }
+
+.slide-toggle {
+    margin: 5px;
+}

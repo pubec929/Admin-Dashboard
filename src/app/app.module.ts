@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
 import { MainContentComponent } from './main-content/main-content.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
@@ -15,10 +14,15 @@ import { NavElementComponent } from './side-bar/nav-element/nav-element.componen
 import { MatTableModule } from '@angular/material/table';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatInputModule } from '@angular/material/input';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { DetailsElementComponent } from './right-sidebar/details-element/details-element.component';
+import {
+  MatSlideToggleModule,
+  _MatSlideToggleRequiredValidatorModule,
+} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,8 @@ import { DetailsElementComponent } from './right-sidebar/details-element/details
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
+    _MatSlideToggleRequiredValidatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

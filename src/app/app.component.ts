@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { EndpointDataService } from './services/endpoint-data.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,20 @@ import { Component } from '@angular/core';
 })
 
 export class AppComponent {
-  title = 'admin-dashboard';
-  hello = "hi";
+  selectedId:number = 0;
+ 
+  constructor(public service: EndpointDataService) {}
+
+  // handleKeyPress(event: any) {
+  //   console.log("jlaödsjflksdf", event);
+  // }
+
+  itemSelected(id:number){
+    this.selectedId = id;
+  }
+
+  close(_: boolean) {
+    console.log("event received")
+    this.selectedId = 0;
+  }
 }

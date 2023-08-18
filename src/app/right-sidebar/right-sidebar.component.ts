@@ -1,10 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, SimpleChanges, Output, HostListener } from '@angular/core';
+import { EndpointDataService } from '../services/endpoint-data.service';
 
 @Component({
   selector: 'app-right-sidebar',
   templateUrl: './right-sidebar.component.html',
   styleUrls: ['./right-sidebar.component.css']
 })
-export class RightSidebarComponent {
+
+
+export class RightSidebarComponent implements OnChanges {
+  @Output() close : EventEmitter<boolean> = new EventEmitter;
+  @Input() selectedId:number=0;
+  constructor(public service: EndpointDataService) {}
+  
+  // close() {
+  //   this.selectedId = 0;
+  // }
+  isChecked = true;
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyPress(event: any) {
+    this.close.emit()
+  }
+
+  handleClick() {
+    console.log("clicked")
+    this.close.emit();
+  }
+
+  handleFirstToggle(event: MouseEvent) {
+    this.data.agent.stopMalware = !this.data.agent.stopMalware;
+  }
+
+  handleSecondToggle(event: MouseEvent) {
+    this.data.agent.response = !this.data.agent.response;
+  }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('selectedId' in changes){
+      this.data = this.getData(this.selectedId);
+    }
+  }
+  getData(id: number) {
+    for (const element of this.service.data) {
+      if (element.id === id) return element;
+    }
+    return undefined;
+  }
+
+  data:any ;
 
 }

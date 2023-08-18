@@ -20,7 +20,7 @@
 }
 
 .side-bar-right {
-  grid-area: right
+  grid-area: right;
 }
 
 .side-bar-left {
@@ -30,9 +30,23 @@
 .container {
   height: 100%;
   display: grid;
+  transition: 300ms;
   grid-template-rows: 64px 1fr;
-  grid-template-columns: 256px 1fr 404px;
   grid-template-areas: 
     'header header header'
     'left main right';
 }
+
+.isNotVisible {
+  grid-template-columns: 256px 1fr 0px;
+}
+
+.isVisible {
+  grid-template-columns: 256px 1fr 404px;
+}
+
+/* @keyframes slide-in {
+  from {
+    grid-template-columns: 256px 1px 0px;
+  }
+} */

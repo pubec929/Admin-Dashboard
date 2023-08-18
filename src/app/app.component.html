@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container"  [ngClass]="selectedId != 0 ? 'isVisible' : 'isNotVisible'">
     <app-header class="header"></app-header>
     <app-side-bar class="side-bar-left"></app-side-bar>
-    <app-main-content class="main"></app-main-content>
-    <app-right-sidebar class="side-bar-right"></app-right-sidebar>
+    <app-main-content class="main" (itemSelected)="itemSelected($event)" [selectedId]="selectedId" ></app-main-content>
+    <app-right-sidebar (close)="close($event)" [selectedId]="selectedId"  *ngIf="selectedId != 0" class="side-bar-right"></app-right-sidebar>
 </div>

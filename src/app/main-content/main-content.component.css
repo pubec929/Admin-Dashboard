@@ -34,6 +34,12 @@ button {
     color: white !important;
 }
 
+button div {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
 .arrow-icon {
     font-size: 1.8rem !important;
     font-weight: 500 !important;
@@ -111,6 +117,7 @@ tr {
 tr td {
     height: auto !important;
 }
+
 /* th {
     position: sticky;
     top: 50;
