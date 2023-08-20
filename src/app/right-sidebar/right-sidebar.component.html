@@ -1,58 +1,56 @@
 <div class="container" ((keydown))="handleKeyPress($event)">
-    <div class="header">
-        <p>Details</p>
-        <mat-icon (click)="handleClick()">
-            close
-        </mat-icon>
-    </div>
-    <div class="main-content">
-        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
-            <mat-expansion-panel-header class="expansion-header">
-              <mat-panel-title class="panel-title">
-                Endpunkt
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div *ngIf="data">
-                <app-details-element key="Name" [value]="data.name"></app-details-element>
-                <app-details-element key="Status" [value]="data.status"></app-details-element>
-                <app-details-element key="ID" [value]="data.id"></app-details-element>
-                <app-details-element key="Kunde" [value]="data.kunde"></app-details-element>
-                <app-details-element key="Betriebsystem" [value]="data.betriebsystem"></app-details-element>
-                <app-details-element key="Organisationseinheit" [value]="data.organisationUnit"></app-details-element>
-                <app-details-element key="Tag" [value]="data.tag"></app-details-element>
-            </div>
-          </mat-expansion-panel>
-        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
-            <mat-expansion-panel-header class="expansion-header">
-              <mat-panel-title class="panel-title">
-                Agent
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div>
-                <app-details-element key="ID" [value]="data.agent.id"></app-details-element>
-                <app-details-element key="Setup ID" [value]="data.agent.setupId"></app-details-element>
-                <app-details-element key="Version" [value]="data.agent.version"></app-details-element>
-                <app-details-element key="Zuletzt gesehen" [value]="data.agent.zuletztGesehen"></app-details-element>
-                <app-details-element key="Letztes Update" [value]="data.agent.letztesUpdate"></app-details-element>
-                <app-details-element key="Analyst Session" [value]="data.agent.analystSession"></app-details-element>
-            </div>
-          </mat-expansion-panel>
-        <mat-expansion-panel class="expansion-panel" [expanded]="true" >
-            <mat-expansion-panel-header class="expansion-header">
-              <mat-panel-title class="panel-title">
-                Agent Konfiguration
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <!-- <div> -->
-              <mat-slide-toggle (click)="handleFirstToggle($event)" [checked]="data.agent.stopMalware" color="primary" class="slide-toggle">Schadcode stoppen</mat-slide-toggle>
-              <mat-slide-toggle (click)="handleSecondToggle($event)" [checked]="data.agent.response" color="primary" class="slide-toggle">Response durch Analysten</mat-slide-toggle>
-            <!-- </div> -->
-          </mat-expansion-panel>
-    </div>
-    <div class="footer">
-        <button mat-flat-button color="warn" >
-            <mat-icon>delete</mat-icon>
-            <p>Agent deinstallieren</p>
-        </button>
-    </div>
+  <div class="header">
+    <p>Details</p>
+    <mat-icon (click)="handleClick()"> close </mat-icon>
+  </div>
+  <div class="main-content">
+    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+      <mat-expansion-panel-header class="expansion-header">
+        <mat-panel-title class="panel-title"> Endpunkt </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div *ngIf="data">
+        <app-details-element key="Name" [value]="data.name"></app-details-element>
+        <app-details-element key="Status" [value]="data.status"></app-details-element>
+        <app-details-element key="ID" [value]="data.id"></app-details-element>
+        <app-details-element key="Kunde" [value]="data.kunde"></app-details-element>
+        <app-details-element key="Betriebsystem" [value]="data.betriebsystem"></app-details-element>
+        <app-details-element key="Organisationseinheit" [value]="data.organisationUnit"></app-details-element>
+        <!-- <app-details-element key="Tag" [value]="data.tag"></app-details-element> -->
+
+        <app-tag-editor [selectedId]="selectedId"></app-tag-editor>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+      <mat-expansion-panel-header class="expansion-header">
+        <mat-panel-title class="panel-title"> Agent </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <app-details-element key="ID" [value]="data.agent.id"></app-details-element>
+        <app-details-element key="Setup ID" [value]="data.agent.setupId"></app-details-element>
+        <app-details-element key="Version" [value]="data.agent.version"></app-details-element>
+        <app-details-element key="Zuletzt gesehen" [value]="data.agent.zuletztGesehen"></app-details-element>
+        <app-details-element key="Letztes Update" [value]="data.agent.letztesUpdate"></app-details-element>
+        <app-details-element key="Analyst Session" [value]="data.agent.analystSession"></app-details-element>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+      <mat-expansion-panel-header class="expansion-header">
+        <mat-panel-title class="panel-title">
+          Agent Konfiguration
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- <div> -->
+      <mat-slide-toggle (click)="handleFirstToggle($event)" [checked]="data.agent.stopMalware" color="primary"
+        class="slide-toggle">Schadcode stoppen</mat-slide-toggle>
+      <mat-slide-toggle (click)="handleSecondToggle($event)" [checked]="data.agent.response" color="primary"
+        class="slide-toggle">Response durch Analysten</mat-slide-toggle>
+      <!-- </div> -->
+    </mat-expansion-panel>
+  </div>
+  <div class="footer">
+    <button mat-flat-button color="warn">
+      <mat-icon>delete</mat-icon>
+      <p>Agent deinstallieren</p>
+    </button>
+  </div>
 </div>

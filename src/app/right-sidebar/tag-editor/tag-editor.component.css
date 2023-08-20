@@ -1,0 +1,32 @@
+.container {
+    display: grid;
+    
+    width: 100%;
+    word-wrap: break-word;
+    
+}
+
+.viewTag {
+    grid-template-columns: minmax(50%, 1fr) minmax(50%, 1fr);
+}
+
+.addTag {
+    grid-template-columns: auto 1fr;
+    column-gap: 10px;
+    margin-top: 10px;
+}
+
+
+.form-field {
+    width: 100%;
+}
+
+.input-container {
+    display: flex;
+    
+}
+
+p {
+    margin: 0 !important;
+    line-height: 20px;
+}

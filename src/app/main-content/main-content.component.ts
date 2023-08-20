@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Output, Input} from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { EndpointDataService } from '../services/endpoint-data.service';
 
 function getVisibleData(data: any, pageSize: number, pageIndex: number) {
-  return data.slice(pageSize  * pageIndex, pageSize * pageIndex + pageSize);
+  return data.slice(pageSize * pageIndex, pageSize * pageIndex + pageSize);
 }
-
 
 // class Entry {
 // //   constructor(
@@ -16,24 +15,30 @@ function getVisibleData(data: any, pageSize: number, pageIndex: number) {
 @Component({
   selector: 'app-main-content',
   templateUrl: './main-content.component.html',
-  styleUrls: ['./main-content.component.css']
+  styleUrls: ['./main-content.component.css'],
 })
 export class MainContentComponent {
-  @Output() itemSelected : EventEmitter<number> = new EventEmitter();
-  @Input() selectedId:number = 0;
+  @Output() itemSelected: EventEmitter<number> = new EventEmitter();
+  @Input() selectedId: number = 0;
 
-  constructor(public service: EndpointDataService) {
-  }
+  constructor(public service: EndpointDataService) {}
 
   isDownloading = false;
-  
-  displayedColumns = ["Name", "Status", "lastUpdate", "Version", "Tag", "Organisationseinheit"]
+
+  displayedColumns = [
+    'Name',
+    'Status',
+    'lastUpdate',
+    'Version',
+    'Tag',
+    'Organisationseinheit',
+  ];
 
   selectOptions = [
-    {value: "option-0", viewValue: "Test 1"},
-    {value: "option-1", viewValue: "Test 2"},
-    {value: "option-2", viewValue: "Test 3"}
-  ]
+    { value: 'option-0', viewValue: 'Test 1' },
+    { value: 'option-1', viewValue: 'Test 2' },
+    { value: 'option-2', viewValue: 'Test 3' },
+  ];
 
   length = this.service.data.length;
   pageSize: any = 25;
@@ -45,9 +50,13 @@ export class MainContentComponent {
 
   pageEvent: any;
 
-  visibleData: any = getVisibleData(this.service.data, this.pageSize, this.pageIndex)
+  visibleData: any = getVisibleData(
+    this.service.data,
+    this.pageSize,
+    this.pageIndex
+  );
 
-  download(_:any) {
+  download(_: any) {
     this.isDownloading = !this.isDownloading;
   }
 
@@ -56,10 +65,14 @@ export class MainContentComponent {
     this.length = e.length;
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
-    this.visibleData = getVisibleData(this.service.data, this.pageSize, this.pageIndex)
+    this.visibleData = getVisibleData(
+      this.service.data,
+      this.pageSize,
+      this.pageIndex
+    );
   }
 
-  rowSelected(item: any){
+  rowSelected(item: any) {
     // this.service.isClicked = item.id !== this.service.isClicked ? item.id : 0;
     this.selectedId = item.id !== this.selectedId ? item.id : 0;
     this.itemSelected.emit(this.selectedId);

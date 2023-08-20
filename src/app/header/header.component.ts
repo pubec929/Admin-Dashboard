@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-
+  user = {
+    name: 'Paul Wolf',
+    email: 'paul.wolf@gdata.de',
+  };
 }

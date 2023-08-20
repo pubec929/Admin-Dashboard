@@ -2,10 +2,10 @@ Components Tree:
     - Main page:
         > Header ✅
             > Logo and Name on the left side, Account on the right
-        > Left Sidebar
+        > Left Sidebar ✅
             > Routing Tree(Fields can be toggled)
                 > Other Tabs 
-        > Main Content(Can differentiate based on what tab clicked)
+        > Main Content(Can differentiate based on what tab clicked) ✅
              > Top bar
                 > Text and button
             > Container
@@ -48,8 +48,10 @@ Todo-Liste(16.08.2023/12:08):
     -> Scrollbar stylen ✅
     -> Rechte Sidebar 🚧
         > Tags hinzufügen lassen ❗
-            > Muss die Daten im Service verändern
-            > Bestätigunsbutton und Chips anzeigen
+            > Muss die Daten im Service verändern ✅
+            > Chips und Input anzeigen ✅
+            > Main Content muss die Änderung direkt übernehmen(Subscriptions)
+            > Bestätigunsbutton
         > Slide Toggles sollen die Daten aus dem Service anzeigen und verändern ✅
         > Im Template die harten gecodeten Werte durch die Variablen ersetzen ✅
         > Die Daten im Service ausweiten(Agent Objekt hinzufügen) ✅
@@ -63,11 +65,9 @@ Todo-Liste(16.08.2023/12:08):
     -> Table Row Hover effect: Blue outline ✅
     -> Table Row clicked effect: #cddef2 background, use typescript ✅
 
-Questions and problems(17.08.23/13:20):
-    - How does custom keyboard navigation in Angular work?
-        for example: Closing the right sidebar with pressing escape
-    - The right sidebar must know state from other Components!!!
-        - The table entry specific data
-        - And the state of "isClicked"
-    - For the sidebar some additional mock data is needed
+Questions and problems(20.08.23/20:54):
+    - Wie funktionieren Subscriptions/Observables
+    - Sind Signals besser als Subscriptions?
+        -> https://www.freecodecamp.org/news/angular-signals/
+        -> https://angular.io/guide/signals
     
