@@ -3,7 +3,7 @@
     <p *ngIf="!addingTag">{{service.getEndpoint(selectedId)!.tag}}</p>
     <mat-form-field class="form-field" *ngIf="addingTag">
         <mat-chip-grid #chipGrid aria-label="Enter keywords" [formControl]="formControl">
-            <mat-chip-row *ngFor="let keyword of keywords" (removed)="removeKeyword(keyword)">
+            <mat-chip-row *ngFor="let keyword of endpoint!.tag" (removed)="removeKeyword(keyword)">
                 {{keyword}}
                 <button matChipRemove aria-label="'remove ' + keyword">
                     <mat-icon>cancel</mat-icon>

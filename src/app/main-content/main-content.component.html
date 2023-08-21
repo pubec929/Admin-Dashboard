@@ -30,8 +30,9 @@
                 <mat-icon matSuffix class='material-icons-outlined'>search</mat-icon>
               </mat-form-field>
         </div>
+
         <div class="table-wrapper">
-            <table mat-table [dataSource]="visibleData" class="mat-elevation-z8 table">
+            <table #tmpTable mat-table [dataSource]="visibleData()" class="mat-elevation-z8 table">
                 <ng-container matColumnDef="Name">
                     <th mat-header-cell *matHeaderCellDef> Name </th>
                     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -64,11 +65,11 @@
                class="demo-paginator"
                (page)="handlePageEvent($event)"
                [length]="length"
-               [pageSize]="pageSize"
+               [pageSize]="pageSize()"
                [showFirstLastButtons]="showFirstLastButtons"
                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
               
-               [pageIndex]="pageIndex"
+               [pageIndex]="pageIndex()"
                aria-label="Select page">
     </mat-paginator>
     </div>

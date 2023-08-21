@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
-interface tableEntry {
+interface endpoint {
   agent: agent;
   id: number;
   name: string;
@@ -43,13 +43,13 @@ export class EndpointDataService {
   };
 
   getEndpoint(id: number) {
-    for (const element of this.data) {
+    for (const element of this.data()) {
       if (element.id === id) return element;
     }
     return undefined;
   }
 
-  data: tableEntry[] = [
+  data = signal<endpoint[]>([
     {
       agent: structuredClone(this.agent),
       id: this.tmp++,
@@ -386,5 +386,5 @@ export class EndpointDataService {
       kunde: 'Google',
       betriebsystem: 'Windows XP',
     },
-  ];
+  ]);
 }

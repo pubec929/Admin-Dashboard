@@ -6,6 +6,7 @@ import {
   SimpleChanges,
   Output,
   HostListener,
+  Signal
 } from '@angular/core';
 import { EndpointDataService } from '../services/endpoint-data.service';
 

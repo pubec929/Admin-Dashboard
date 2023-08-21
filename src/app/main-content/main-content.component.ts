@@ -1,17 +1,6 @@
-import { Component, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input, computed, signal, effect} from '@angular/core';
 import { EndpointDataService } from '../services/endpoint-data.service';
 
-function getVisibleData(data: any, pageSize: number, pageIndex: number) {
-  return data.slice(pageSize * pageIndex, pageSize * pageIndex + pageSize);
-}
-
-// class Entry {
-// //   constructor(
-// // ) {}
-// }
-
-// const x = new Entry("Simon Müller", "online", "12.08.23", "1.0", "none", "1");
-// console.log(x)
 @Component({
   selector: 'app-main-content',
   templateUrl: './main-content.component.html',
@@ -22,7 +11,6 @@ export class MainContentComponent {
   @Input() selectedId: number = 0;
 
   constructor(public service: EndpointDataService) {}
-
   isDownloading = false;
 
   displayedColumns = [
@@ -40,9 +28,9 @@ export class MainContentComponent {
     { value: 'option-2', viewValue: 'Test 3' },
   ];
 
-  length = this.service.data.length;
-  pageSize: any = 25;
-  pageIndex = 0;
+  length = this.service.data().length;
+  pageSize = signal(25);
+  pageIndex = signal(0);
   pageSizeOptions = [5, 10, 25, this.length];
 
   showPageSizeOptions = true;
@@ -50,11 +38,7 @@ export class MainContentComponent {
 
   pageEvent: any;
 
-  visibleData: any = getVisibleData(
-    this.service.data,
-    this.pageSize,
-    this.pageIndex
-  );
+  visibleData = computed(() => this.service.data().slice(this.pageSize() * this.pageIndex(), this.pageSize() * this.pageIndex() + this.pageSize()))
 
   download(_: any) {
     this.isDownloading = !this.isDownloading;
@@ -63,13 +47,8 @@ export class MainContentComponent {
   handlePageEvent(e: any) {
     this.pageEvent = e;
     this.length = e.length;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    this.visibleData = getVisibleData(
-      this.service.data,
-      this.pageSize,
-      this.pageIndex
-    );
+    this.pageSize.set(e.pageSize);
+    this.pageIndex.set(e.pageIndex);    
   }
 
   rowSelected(item: any) {

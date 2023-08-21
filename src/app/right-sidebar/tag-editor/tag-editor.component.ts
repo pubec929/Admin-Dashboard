@@ -12,20 +12,19 @@ export class TagEditorComponent {
   @Input() selectedId: number = 0;
   constructor(public service: EndpointDataService) {}
 
+  endpoint = this.service.getEndpoint(this.selectedId);
+
   addingTag = false;
-  keywords =
-    this.selectedId != 0 ? this.service.getEndpoint(this.selectedId)!.tag : [];
   formControl = new FormControl(['angular']);
 
   onClick(event: MouseEvent) {
-    console.log('clicked');
     this.addingTag = true;
   }
 
   removeKeyword(keyword: string) {
-    const index = this.keywords.indexOf(keyword);
+    const index = this.endpoint!.tag.indexOf(keyword);
     if (index >= 0) {
-      this.keywords.splice(index, 1);
+      this.service.data.mutate(_ => this.endpoint!.tag = this.endpoint!.tag.filter((val, i) => i !== index))
     }
   }
 
@@ -34,22 +33,13 @@ export class TagEditorComponent {
 
     // Add our keyword
     if (value) {
-      this.service.getEndpoint(this.selectedId)!.tag.push(value);
+      this.service.data.mutate(_ => this.endpoint!.tag = [...this.endpoint!.tag, value]);
     }
 
     // Clear the input value
     event.chipInput!.clear();
   }
-
-  test() {
-    console.log(this.keywords);
-  }
   ngOnChanges(changes: SimpleChanges): void {
-    if ('selectedId' in changes) {
-      this.keywords =
-        this.selectedId != 0
-          ? this.service.getEndpoint(this.selectedId)!.tag
-          : [];
-    }
+    if ('selectedId' in changes) this.endpoint = this.service.getEndpoint(this.selectedId);
   }
 }
