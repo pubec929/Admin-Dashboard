@@ -28,17 +28,16 @@ export class MainContentComponent {
     { value: 'option-2', viewValue: 'Test 3' },
   ];
 
-  length = this.service.data().length;
   pageSize = signal(25);
   pageIndex = signal(0);
-  pageSizeOptions = [5, 10, 25, this.length];
+  pageSizeOptions = [5, 10, 25, this.service.data()?.length ?? 0];
 
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
   pageEvent: any;
 
-  visibleData = computed(() => this.service.data().slice(this.pageSize() * this.pageIndex(), this.pageSize() * this.pageIndex() + this.pageSize()))
+  visibleData = computed(() => (this.service.data() ?? [] ) .slice(this.pageSize() * this.pageIndex(), this.pageSize() * this.pageIndex() + this.pageSize()))
 
   download(_: any) {
     this.isDownloading = !this.isDownloading;
@@ -46,7 +45,6 @@ export class MainContentComponent {
 
   handlePageEvent(e: any) {
     this.pageEvent = e;
-    this.length = e.length;
     this.pageSize.set(e.pageSize);
     this.pageIndex.set(e.pageIndex);    
   }

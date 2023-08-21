@@ -45,29 +45,26 @@ Research:
 
 
 Todo-Liste(16.08.2023/12:08):
-    -> Scrollbar stylen ✅
+    -----> Frontend <-----
     -> Rechte Sidebar 🚧
-        > Tags hinzufügen lassen ❗
-            > Muss die Daten im Service verändern ✅
-            > Chips und Input anzeigen ✅
-            > Main Content muss die Änderung direkt übernehmen(Subscriptions)
-            > Bestätigunsbutton
-        > Slide Toggles sollen die Daten aus dem Service anzeigen und verändern ✅
-        > Im Template die harten gecodeten Werte durch die Variablen ersetzen ✅
-        > Die Daten im Service ausweiten(Agent Objekt hinzufügen) ✅
-        > Mit Escape die Sidebar schließen ✅
-        > Öffnen und schließen der Sidebar animieren ✅
-    -> Loading Spinner im Endpunkt exportieren Button ✅
+        > Tags hinzufügen lassen ✅
+            > Bestätigunsbutton 🚧
     -> Light und Dark Mode
     -> User Information Dropdown
-    -> Benutzer Icon raussuchen ✅
     -> Paginator Label Text ändern
-    -> Table Row Hover effect: Blue outline ✅
-    -> Table Row clicked effect: #cddef2 background, use typescript ✅
+    -----> Backend <-----
+    -> Server einrichten
+    -> Erste Route für allgemeine Daten erstellen
 
-Questions and problems(20.08.23/20:54):
-    - Wie funktionieren Subscriptions/Observables
-    - Sind Signals besser als Subscriptions?
-        -> https://www.freecodecamp.org/news/angular-signals/
-        -> https://angular.io/guide/signals
+
+Backend einrichten:
+    - Node Server mit Express
+    - Die Daten befinden sich auf einer Route mit der Id als Query Parameter. Vielleicht eine Route für die Tabelle und eine für die Sidebar
+    - Suche und Paging müssen auf dem Server stattfinden
+    - Agent Konfiguration und die Tags müssen veränderbar sein, Route mit Id des Objekts und Property
+
+
+
+Questions and problems(21.08.23/11:29):
+    -> Was ist middlware?
     

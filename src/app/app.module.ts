@@ -1,9 +1,12 @@
+// Angular build-ins
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+
+// Components
+import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { MainContentComponent } from './main-content/main-content.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
@@ -12,6 +15,7 @@ import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { DetailsElementComponent } from './right-sidebar/details-element/details-element.component';
 import { TagEditorComponent } from './right-sidebar/tag-editor/tag-editor.component';
 
+// Material Ui components
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -58,6 +62,7 @@ import { MatMenuModule } from '@angular/material/menu';
     ReactiveFormsModule,
     MatChipsModule,
     MatMenuModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

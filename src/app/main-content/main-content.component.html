@@ -64,7 +64,7 @@
         <mat-paginator #paginator
                class="demo-paginator"
                (page)="handlePageEvent($event)"
-               [length]="length"
+               [length]="service.data()?.length ?? 0"
                [pageSize]="pageSize()"
                [showFirstLastButtons]="showFirstLastButtons"
                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
