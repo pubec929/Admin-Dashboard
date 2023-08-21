@@ -27,6 +27,17 @@ app.get('/endpoints/:id', (req: Request, res: Response): void => {
   } 
 });
 
+app.get('/endpoints/:skip/:take', (req: Request, res: Response): void => {
+  const startIndex = parseInt(req.params.skip);
+  const numOfItems = parseInt(req.params.take);
+
+  if (startIndex > endpoints.length) {
+    res.status(404).json({ message: `Skip Wert ${startIndex} ist größer als die Länge des EndpointArrays`})
+  } else {
+    res.json(endpoints.slice(startIndex, numOfItems + startIndex));
+  }
+})
+
 const start = async (): Promise<void> => {
   try {
     app.listen(3000, 'localhost', () => {
