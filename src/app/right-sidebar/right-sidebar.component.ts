@@ -6,9 +6,8 @@ import {
   SimpleChanges,
   Output,
   HostListener,
-  Signal
 } from '@angular/core';
-import { EndpointDataService } from '../services/endpoint-data.service';
+import { EndpointDataService, data } from '../services/endpoint-data.service';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -18,36 +17,39 @@ import { EndpointDataService } from '../services/endpoint-data.service';
 export class RightSidebarComponent implements OnChanges {
   @Output() close: EventEmitter<boolean> = new EventEmitter();
   @Input() selectedId: number = 0;
-  constructor(public service: EndpointDataService) {}
-
-  // close() {
-  //   this.selectedId = 0;
-  // }
-  isChecked = true;
+  constructor(public service: EndpointDataService) {
+  }
 
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: any) {
     if (event.key === 'Escape') this.close.emit();
   }
 
+  // data$ = this.service.fetchId(1).subscribe(val => console.log(val));
+  // test(val: any) {
+  //   return JSON.stringify(val);
+  // }
+
+  data$ = this.service.fetchId(1);
+  
+
   handleClick() {
-    console.log('clicked');
     this.close.emit();
   }
 
   handleFirstToggle(event: MouseEvent) {
-    this.data.agent.stopMalware = !this.data.agent.stopMalware;
+    // this.data.agent.stopMalware = !this.data.agent.stopMalware;
   }
 
   handleSecondToggle(event: MouseEvent) {
-    this.data.agent.response = !this.data.agent.response;
+    // this.data.agent.response = !this.data.agent.response;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // if ('selectedId' in changes) {
-    //   this.data = this.service.getEndpoint(this.selectedId);
-    // }
+    if ('selectedId' in changes) {
+      // this.data$ = this.service.fetchId(this.selectedId).subscribe(val => console.log(val));
+      this.data$ = this.service.fetchId(this.selectedId)
+    }
   }
 
-  data: any;
 }

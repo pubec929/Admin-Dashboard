@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input} from '@angular/core';
+import { Component, EventEmitter, Output, Input, computed, effect} from '@angular/core';
 import { EndpointDataService} from '../services/endpoint-data.service';
 import { map, tap } from 'rxjs';
 
@@ -11,7 +11,13 @@ export class MainContentComponent {
   @Output() itemSelected: EventEmitter<number> = new EventEmitter();
   @Input() selectedId: number = 0;
 
-  constructor(public service: EndpointDataService) {}
+  constructor(public service: EndpointDataService) {
+    effect(() => {
+      this.service.refetch();
+      this.visibleData$ = this.load(this.pageIndex, this.pageSize); 
+      console.log("refetch");
+    })
+  }
   isDownloading = false;
 
   displayedColumns = [
@@ -39,7 +45,7 @@ export class MainContentComponent {
 
   pageEvent: any;
 
-  visibleData$ = this.load(this.pageIndex, this.pageSize);
+  visibleData$ = this.load(this.pageIndex, this.pageSize); 
 
   load(skip:number, take:number){
     return this.service.fetchData(skip * take, take)

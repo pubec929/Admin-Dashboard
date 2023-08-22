@@ -30,3 +30,8 @@ p {
     margin: 0 !important;
     line-height: 20px;
 }
+
+.submit-btn {
+    padding-right: 8px;
+    cursor: pointer;
+}

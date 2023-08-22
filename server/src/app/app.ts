@@ -11,10 +11,59 @@ app.get('/', (req: Request, res: Response): Response => {
   return res.json({ message: 'Hello, World Wide Web!' });
 });
 
+// function removeAgent(array: endpoint[]) {
+//   return array.map(element => {
+//     const tmp = {...element}
+//     delete tmp.agent;
+//     return tmp
+//   })
+// }
+function getId(id: number) {
+  for (let element of data) {
+    if (element.endpoint.id === id) return element;
+  }
+  return undefined;
+}
+
 // returns all endpoints
+function getAllEndpoints() {
+  let endpoints = []
+  for (let element of data) {
+    endpoints.push({...element.endpoint});
+  }
+  return endpoints;
+}
+
+app.put("/endpoints/:id/tags", (req: Request, res: Response): void => {
+  const id = parseInt(req.params.id)
+  const updatedTags = req.body.body;
+  // implement data validation
+  // let currentEndpoint = getId(id)
+  // if (!currentEndpoint) {
+  //   res.status(404).json({message: "Invalid id"})
+  // } 
+  // currentEndpoint.endpoint.tag = updatedTags;
+  let updatedEndpoint: endpoint; 
+  for (let element of data) {
+    if (element.endpoint.id === id) {
+      element.endpoint.tag = updatedTags;
+      updatedEndpoint = element.endpoint
+      break
+    }
+  }
+  if (!updatedEndpoint) {
+    res.status(404).json({message: "Invalid id"})
+  } else {
+    res.json(updatedEndpoint.tag);
+  }
+})
+
+
 app.get("/endpoints", (req: Request, res: Response): void => {
   const skip = ('skip' in req.query) ? parseInt(req.query.skip.toString()) : 0;
   const take = ("take" in req.query) ? parseInt(req.query.take.toString()) : 25;
+
+  const endpoints = getAllEndpoints();  
 
   if (skip > endpoints.length) {
     res.status(404).json({ message: `Skip Wert ${skip} ist größer als die Länge des EndpointArrays`})
@@ -34,8 +83,10 @@ app.get("/endpoints", (req: Request, res: Response): void => {
 // returns one endpoint specifiec to id
 app.get('/endpoints/:id', (req: Request, res: Response): void => {
   const id = +req.params.id
-  const selectedItem = getEndpoint(id) 
+  const selectedItem = getId(id) 
   if (selectedItem) {
+    // const delay = new Date(new Date().getTime() + 2 * 1000);
+    // while(delay > new Date()){}
     res.json(selectedItem);
   } else {
     res.status(404).json({ message: `Endpoint mit der ID ${id} wurde nicht gefunden...`})
@@ -55,8 +106,12 @@ const start = async (): Promise<void> => {
 
 void start();
 
-interface endpoint {
+interface data {
+  endpoint: endpoint;
   agent: agent;
+}
+
+interface endpoint {
   id: number;
   name: string;
   status: string;
@@ -79,12 +134,7 @@ interface agent {
   response: boolean;
 }
 
-function getEndpoint(id: number) {
-  for (const element of endpoints) {
-    if (element.id === id) return element;
-  }
-  return undefined;
-}
+
 
 let tmp = 1;
 
@@ -99,341 +149,397 @@ const agent: agent = {
   response: true,
 };
 
-const endpoints: endpoint[] = [
+const data: data[] = [
   {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '01',
-    version: '1.0.1',
-    tag: ['hello', 'test'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+    endpoint: {
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '01',
+      version: '1.0.1',
+      tag: ['hello', 'test'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+    },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '02',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  
+  {   endpoint: {
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '02',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+      agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '03',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint: {
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '03',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '04',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '04',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '05',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '05',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '06',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '06',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '07',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '07',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '08',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '08',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '09',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '09',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '10',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '10',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '11',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '11',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '12',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '12',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '13',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '13',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '14',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '14',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '15',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '15',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '16',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '16',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '17',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '17',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '18',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '18',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '19',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '19',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '20',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '20',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '21',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '21',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '22',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '22',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '23',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '23',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '24',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '24',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '25',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '25',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '26',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '26',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '27',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '27',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+      },
+    agent: structuredClone(agent)
   },
-  {
-    agent: structuredClone(agent),
-    id: tmp++,
-    name: 'Simon',
-    status: 'online',
-    lastUpdate: '28',
-    version: '1.0.1',
-    tag: ['hello'],
-    organisationUnit: '1412',
-    kunde: 'Google',
-    betriebsystem: 'Windows XP',
-  },
-];
+  {    
+   endpoint:{
+      id: tmp++,
+      name: 'Simon',
+      status: 'online',
+      lastUpdate: '28',
+      version: '1.0.1',
+      tag: ['hello'],
+      organisationUnit: '1412',
+      kunde: 'Google',
+      betriebsystem: 'Windows XP',
+    },
+ agent: structuredClone(agent)
+  }
+]

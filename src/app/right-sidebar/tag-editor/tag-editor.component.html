@@ -1,9 +1,9 @@
 <div class="container" [ngClass]="addingTag ? 'addTag' : 'viewTag'" (click)="onClick($event)">
     <p style="color: lightgray">Tag</p>
-    <!-- <p *ngIf="!addingTag">{{service.getEndpoint(selectedId)!.tag}}</p>
+    <p *ngIf="!addingTag">{{tags}}</p>
     <mat-form-field class="form-field" *ngIf="addingTag">
         <mat-chip-grid #chipGrid aria-label="Enter keywords" [formControl]="formControl">
-            <mat-chip-row *ngFor="let keyword of endpoint!.tag" (removed)="removeKeyword(keyword)">
+            <mat-chip-row *ngFor="let keyword of tags" (removed)="removeKeyword(keyword)">
                 {{keyword}}
                 <button matChipRemove aria-label="'remove ' + keyword">
                     <mat-icon>cancel</mat-icon>
@@ -11,10 +11,10 @@
             </mat-chip-row>
         </mat-chip-grid>
         <div class="input-container">
-            <input placeholder="Neuer Tag..." [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="add($event)" />
-            <!-- <mat-icon matSuffix (click)>
+            <input #tagInput placeholder="Neuer Tag..." [matChipInputFor]="chipGrid" (matChipInputTokenEnd)="add($event)" />
+            <mat-icon matSuffix class="submit-btn" (click)="onSubmit($event)">
                     check
-                </mat-icon> -->
-        <!-- </div>
-    </mat-form-field> -->
+            </mat-icon> 
+        </div>
+    </mat-form-field>
 </div>

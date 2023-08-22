@@ -1,10 +1,12 @@
-import { Injectable, OnInit, Signal, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+
+export interface data {
+  endpoint: endpoint;
+  agent: agent;
+}
 
 export interface endpoint {
-  agent: agent;
   id: number;
   name: string;
   status: string;
@@ -48,9 +50,20 @@ export class EndpointDataService {
   //   }
   //   return undefined;
   // }
+  refetch = signal(false);
+
+  fetchId(id: number) {
+    const url = `http://localhost:3000/endpoints/${id}`
+    return this.httpClient.get<data>(url, {});
+  }
 
   fetchData(skip=0, take=25) {
     const url = "http://localhost:3000/endpoints"
     return this.httpClient.get<response>(url, {params: {skip: skip, take: take}});
+  }
+
+  updateTags(id: number, tags: string[]) {
+    const url = `http://localhost:3000/endpoints/${id}/tags`
+    return this.httpClient.put<string[]>(url, {body:tags});
   }
 }
