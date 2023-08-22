@@ -44,9 +44,9 @@ export class RightSidebarComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('selectedId' in changes) {
-      this.data = this.service.getEndpoint(this.selectedId);
-    }
+    // if ('selectedId' in changes) {
+    //   this.data = this.service.getEndpoint(this.selectedId);
+    // }
   }
 
   data: any;

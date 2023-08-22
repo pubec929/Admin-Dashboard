@@ -64,7 +64,7 @@ Todo-Liste(16.08.2023/12:08):
 
 
 Backend einrichten:
-    - Node Server mit Express
+    - Node Server mit Express ✅
     - Die Daten befinden sich auf einer Route mit der Id als Query Parameter. Vielleicht eine Route für die Tabelle und eine für die Sidebar
     - Suche und Paging müssen auf dem Server stattfinden
     - Agent Konfiguration und die Tags müssen veränderbar sein, Route mit Id des Objekts und Property

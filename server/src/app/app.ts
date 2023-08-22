@@ -13,7 +13,22 @@ app.get('/', (req: Request, res: Response): Response => {
 
 // returns all endpoints
 app.get("/endpoints", (req: Request, res: Response): void => {
-  res.json(endpoints)
+  const skip = ('skip' in req.query) ? parseInt(req.query.skip.toString()) : 0;
+  const take = ("take" in req.query) ? parseInt(req.query.take.toString()) : 25;
+
+  if (skip > endpoints.length) {
+    res.status(404).json({ message: `Skip Wert ${skip} ist größer als die Länge des EndpointArrays`})
+  } else {
+    const queryResponse = {
+      metadata: {
+        skip: skip,
+        take: take,
+        totalItems: endpoints.length
+      },
+      content: endpoints.slice(skip, take + skip)
+    }
+    res.json(queryResponse);
+  }
 })
 
 // returns one endpoint specifiec to id
@@ -26,17 +41,6 @@ app.get('/endpoints/:id', (req: Request, res: Response): void => {
     res.status(404).json({ message: `Endpoint mit der ID ${id} wurde nicht gefunden...`})
   } 
 });
-
-app.get('/endpoints/:skip/:take', (req: Request, res: Response): void => {
-  const startIndex = parseInt(req.params.skip);
-  const numOfItems = parseInt(req.params.take);
-
-  if (startIndex > endpoints.length) {
-    res.status(404).json({ message: `Skip Wert ${startIndex} ist größer als die Länge des EndpointArrays`})
-  } else {
-    res.json(endpoints.slice(startIndex, numOfItems + startIndex));
-  }
-})
 
 const start = async (): Promise<void> => {
   try {

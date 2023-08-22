@@ -12,7 +12,7 @@ export class TagEditorComponent {
   @Input() selectedId: number = 0;
   constructor(public service: EndpointDataService) {}
 
-  endpoint = this.service.getEndpoint(this.selectedId);
+  // endpoint = this.service.getEndpoint(this.selectedId);
 
   addingTag = false;
   formControl = new FormControl(['angular']);
@@ -21,25 +21,25 @@ export class TagEditorComponent {
     this.addingTag = true;
   }
 
-  removeKeyword(keyword: string) {
-    const index = this.endpoint!.tag.indexOf(keyword);
-    if (index >= 0) {
-      // this.service.data.mutate(_ => this.endpoint!.tag = this.endpoint!.tag.filter((val, i) => i !== index))
-    }
-  }
+  // removeKeyword(keyword: string) {
+  //   // const index = this.endpoint!.tag.indexOf(keyword);
+  //   if (index >= 0) {
+  //     // this.service.data.mutate(_ => this.endpoint!.tag = this.endpoint!.tag.filter((val, i) => i !== index))
+  //   }
+  // }
 
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+  // add(event: MatChipInputEvent): void {
+  //   const value = (event.value || '').trim();
 
-    // Add our keyword
-    if (value) {
-      // this.service.data.mutate(_ => this.endpoint!.tag = [...this.endpoint!.tag, value]);
-    }
+  //   // Add our keyword
+  //   if (value) {
+  //     // this.service.data.mutate(_ => this.endpoint!.tag = [...this.endpoint!.tag, value]);
+  //   }
 
-    // Clear the input value
-    event.chipInput!.clear();
-  }
+  //   // Clear the input value
+  //   event.chipInput!.clear();
+  // }
   ngOnChanges(changes: SimpleChanges): void {
-    if ('selectedId' in changes) this.endpoint = this.service.getEndpoint(this.selectedId);
+    // if ('selectedId' in changes) this.endpoint = this.service.getEndpoint(this.selectedId);
   }
 }

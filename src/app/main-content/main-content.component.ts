@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output, Input, computed, signal, effect} from '@angular/core';
-import { EndpointDataService } from '../services/endpoint-data.service';
+import { Component, EventEmitter, Output, Input} from '@angular/core';
+import { EndpointDataService} from '../services/endpoint-data.service';
+import { map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-main-content',
@@ -28,25 +29,33 @@ export class MainContentComponent {
     { value: 'option-2', viewValue: 'Test 3' },
   ];
 
-  pageSize = signal(25);
-  pageIndex = signal(0);
-  pageSizeOptions = [5, 10, 25, this.service.data()?.length ?? 0];
+  pageSize = 25;
+  pageIndex = 0;
+  total:number = 0;
+  pageSizeOptions = [5, 10, 25, this.total];
 
   showPageSizeOptions = true;
   showFirstLastButtons = true;
 
   pageEvent: any;
 
-  visibleData = computed(() => (this.service.data() ?? [] ) .slice(this.pageSize() * this.pageIndex(), this.pageSize() * this.pageIndex() + this.pageSize()))
+  visibleData$ = this.load(this.pageIndex, this.pageSize);
 
+  load(skip:number, take:number){
+    return this.service.fetchData(skip * take, take)
+    .pipe(tap(resp=> this.total = resp.metadata.totalItems ), map(resp=> resp.content))  
+  }
+  
   download(_: any) {
     this.isDownloading = !this.isDownloading;
   }
-
+  
   handlePageEvent(e: any) {
     this.pageEvent = e;
-    this.pageSize.set(e.pageSize);
-    this.pageIndex.set(e.pageIndex);    
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+    
+    this.visibleData$ = this.load(e.pageIndex, e.pageSize);
   }
 
   rowSelected(item: any) {
