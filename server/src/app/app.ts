@@ -99,7 +99,7 @@ app.get("/endpoints", (req: Request, res: Response): void => {
 
 // returns one endpoint specifiec to id
 app.get('/endpoints/:id', (req: Request, res: Response): void => {
-  const id = +req.params.id
+  const id = parseInt(req.params.id)
   const selectedItem = getId(id) 
   if (selectedItem) {
     // const delay = new Date(new Date().getTime() + 2 * 1000);
@@ -109,6 +109,33 @@ app.get('/endpoints/:id', (req: Request, res: Response): void => {
     res.status(404).json({ message: `Endpoint mit der ID ${id} wurde nicht gefunden...`})
   } 
 });
+
+// delete endpoint and agent of data array
+app.delete('/endpoints/:id', (req: Request, res: Response): void => {
+  const id = parseInt(req.params.id);
+  const lengthBefore = data.length
+  data = data.filter((val) => {
+    return val.endpoint.id !== id;
+  })
+  if (lengthBefore === data.length) {
+    res.status(404).json({ message: "Invalid id"})
+  } else {
+    res.status(200);
+  }
+})
+
+// delete agent of data object 
+app.delete("/agents/:id", (req: Request, res: Response): void => {
+  const id = parseInt(req.params.id);
+  for (let element of data) {
+    if (element.agent.id === id) {
+      delete element.agent;
+      res.status(200);
+      return;
+    }
+  }
+  res.status(404).json({ message: "Invalid id"})
+})
 
 const start = async (): Promise<void> => {
   try {
@@ -167,7 +194,7 @@ const agent: agent = {
   response: true,
 };
 
-const data: data[] = [
+let data: data[] = [
   {
     endpoint: {
       id: tmp++,

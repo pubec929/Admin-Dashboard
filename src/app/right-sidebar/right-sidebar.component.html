@@ -1,4 +1,4 @@
-<div class="container" ((keydown))="handleKeyPress($event)">
+<div class="container" ((keydown))="handleKeyPress($event)" *ngIf="data$ | async as display" >
   <!-- <div *ngIf="display | async as Hello">
     {{test(Hello.endpoint)}}
   </div>  -->
@@ -6,7 +6,7 @@
     <p>Details</p>
     <mat-icon (click)="handleClick()"> close </mat-icon>
   </div>
-  <div class="main-content" *ngIf="data$ | async as display">
+  <div class="main-content" >
     <mat-expansion-panel class="expansion-panel" [expanded]="true">
       <mat-expansion-panel-header class="expansion-header">
         <mat-panel-title class="panel-title"> Endpunkt </mat-panel-title>
@@ -51,7 +51,7 @@
     </mat-expansion-panel>
   </div>
   <div class="footer">
-    <button mat-flat-button color="warn">
+    <button mat-flat-button (click)="handleDelete($event, display.endpoint.name, display.endpoint.status)" color="warn">
       <mat-icon>delete</mat-icon>
       <p>Agent deinstallieren</p>
     </button>

@@ -14,6 +14,7 @@ import { NavElementComponent } from './side-bar/nav-element/nav-element.componen
 import { RightSidebarComponent } from './right-sidebar/right-sidebar.component';
 import { DetailsElementComponent } from './right-sidebar/details-element/details-element.component';
 import { TagEditorComponent } from './right-sidebar/tag-editor/tag-editor.component';
+import { DialogInfoComponent } from './right-sidebar/dialog-info/dialog-info.component';
 
 // Material Ui components
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +31,8 @@ import { _MatSlideToggleRequiredValidatorModule } from '@angular/material/slide-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { MatMenuModule } from '@angular/material/menu';
     RightSidebarComponent,
     DetailsElementComponent,
     TagEditorComponent,
+    DialogInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,10 @@ import { MatMenuModule } from '@angular/material/menu';
     ReactiveFormsModule,
     MatChipsModule,
     MatMenuModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule, 
+    MatDialogModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent],

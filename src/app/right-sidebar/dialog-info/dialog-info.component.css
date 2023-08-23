@@ -1,0 +1,10 @@
+.dialog-cancel {
+    background-color: white;
+    border: 1px solid rgb(86, 145, 209);
+    color: rgb(86, 145, 209);
+}
+
+.dialog-accept {
+    background-color: rgb(86, 145, 209);
+    color: white;
+}

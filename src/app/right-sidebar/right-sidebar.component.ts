@@ -8,6 +8,9 @@ import {
   HostListener,
 } from '@angular/core';
 import { EndpointDataService, data } from '../services/endpoint-data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Dialog } from '@angular/cdk/dialog';
+import { DialogInfoComponent } from './dialog-info/dialog-info.component';
 
 @Component({
   selector: 'app-right-sidebar',
@@ -17,7 +20,7 @@ import { EndpointDataService, data } from '../services/endpoint-data.service';
 export class RightSidebarComponent implements OnChanges {
   @Output() close: EventEmitter<boolean> = new EventEmitter();
   @Input() selectedId: number = 0;
-  constructor(public service: EndpointDataService) {}
+  constructor(public service: EndpointDataService, public MatDialog: MatDialog) {}
 
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: any) {
@@ -36,16 +39,35 @@ export class RightSidebarComponent implements OnChanges {
     this.close.emit();
   }
 
-  handleFirstToggle(event: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
+  handleFirstToggle(_: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
     this.service.updateAgentConfig(id, !stopMalware, response).subscribe( () => {
         this.data$ = this.service.fetchId(this.selectedId)
       });
   }
 
-  handleSecondToggle(event: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
+  handleSecondToggle(_: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
     this.service.updateAgentConfig(id, stopMalware, !response).subscribe( () => {
       this.data$ = this.service.fetchId(this.selectedId)
     });
+  }
+
+  handleDelete(_: MouseEvent, name: string, status: string) {
+    
+    const dialogRef = this.MatDialog.open(DialogInfoComponent, {
+      width: '1000px',
+      enterAnimationDuration: "300ms",
+      exitAnimationDuration: "300ms",
+      data: { name, status }
+    });
+
+    dialogRef.afterClosed().subscribe(checked => {
+      console.log("The dialog was closed", checked);
+      if (checked) {
+        // delete whole endpoint close sidebar and update main content
+      } else {
+        // delete just the agent and show agent not existent on sidebar
+      }
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {

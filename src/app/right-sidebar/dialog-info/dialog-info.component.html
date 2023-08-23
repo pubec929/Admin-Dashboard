@@ -1,0 +1,16 @@
+<div class="modal-container">
+    <h1 mat-dialog-title>Agent-Deinstalltion vormerken</h1>
+    <div mat-dialog-content>
+        <p>Der Agent ist gerade nicht erreichbar. Eine Deinstallation kann zu einem späteren Zeitpunkt durchgeführt werden, sobald das Geräte online ist</p>
+        <p>Durch die Deinstallation kann für den ausgewählten Endpunkt <strong>{{data.name}}</strong> keine Überwachung
+            gewährleistet werden. Schadcode wird nicht mehr automatisch gestoppt und unsere Analysten 
+            können keine Respond-Dienstleistungen auf dem Endpunkt durchführen.
+        </p>
+        <mat-checkbox (click)="onClick($event)" [checked]="isChecked" color="primary"></mat-checkbox>
+        <p>{{isChecked}}</p>
+    </div>
+    <div mat-dialog-actions>
+        <button class="dialog-cancel" mat-flat-button mat-dialog-close>Abbrechen</button>
+        <button [mat-dialog-close]="isChecked"  class="dialog-accept" mat-flat-button mat-dialog-close>Deinstallationsauftrag absenden</button>
+    </div>
+</div>
