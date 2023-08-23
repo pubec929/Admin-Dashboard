@@ -43,9 +43,9 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div> 
-      <mat-slide-toggle (click)="handleFirstToggle($event)" [checked]="display.agent.stopMalware" color="primary"
+      <mat-slide-toggle (click)="handleFirstToggle($event, display.agent.id, display.agent.stopMalware, display.agent.response)" [checked]="display.agent.stopMalware" color="primary"
         class="slide-toggle">Schadcode stoppen</mat-slide-toggle>
-      <mat-slide-toggle (click)="handleSecondToggle($event)" [checked]="display.agent.response" color="primary"
+      <mat-slide-toggle (click)="handleSecondToggle($event, display.agent.id, display.agent.stopMalware, display.agent.response)" [checked]="display.agent.response" color="primary"
         class="slide-toggle">Response durch Analysten</mat-slide-toggle>
       </div> 
     </mat-expansion-panel>

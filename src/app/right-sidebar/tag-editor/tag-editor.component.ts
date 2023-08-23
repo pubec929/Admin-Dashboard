@@ -31,10 +31,10 @@ export class TagEditorComponent {
 
       if (this.tags.toString() === this.originalTags.toString() && this.input.nativeElement.value === "") {
         this.addingTag = false;
-        console.log("return")
         return;
       }
-      this.service.updateTags(this.selectedId, [...this.tags, this.input.nativeElement.value]).subscribe(
+      this.tags.push(this.input.nativeElement.value);
+      this.service.updateTags(this.selectedId, this.tags).subscribe(
         () => { this.service.fetchId(this.selectedId).pipe(tap(_ => {
           this.service.refetch.set(!this.service.refetch())
           this.addingTag = false;
@@ -43,10 +43,6 @@ export class TagEditorComponent {
   }
 
   removeKeyword(keyword: string) {
-    // // const index = this.endpoint!.tag.indexOf(keyword);
-    // if (index >= 0) {
-    //   // this.service.data.mutate(_ => this.endpoint!.tag = this.endpoint!.tag.filter((val, i) => i !== index))
-    // }
     const index = this.tags.indexOf(keyword);
     this.tags = this.tags.filter((val, i) => i != index)
   }
@@ -63,7 +59,6 @@ export class TagEditorComponent {
     event.chipInput!.clear();
   }
   ngOnChanges(changes: SimpleChanges): void {
-    // if ('selectedId' in changes) this.endpoint = this.service.getEndpoint(this.selectedId);
     this.originalTags = [...this.tags];
   }
 }

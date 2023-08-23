@@ -19,7 +19,7 @@ export interface endpoint {
 }
 
 interface agent {
-  id: string;
+  id: number;
   setupId: string;
   version: string;
   zuletztGesehen: string;
@@ -65,5 +65,10 @@ export class EndpointDataService {
   updateTags(id: number, tags: string[]) {
     const url = `http://localhost:3000/endpoints/${id}/tags`
     return this.httpClient.put<string[]>(url, {body:tags});
+  }
+
+  updateAgentConfig(id: number, stopMalware: boolean, response: boolean) {
+    const url = `http://localhost:3000/agents/${id}/stopMalware/response`
+    return this.httpClient.put<any>(url, {body: {stopMalware, response}});
   }
 }

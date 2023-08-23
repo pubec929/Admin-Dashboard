@@ -17,8 +17,7 @@ import { EndpointDataService, data } from '../services/endpoint-data.service';
 export class RightSidebarComponent implements OnChanges {
   @Output() close: EventEmitter<boolean> = new EventEmitter();
   @Input() selectedId: number = 0;
-  constructor(public service: EndpointDataService) {
-  }
+  constructor(public service: EndpointDataService) {}
 
   @HostListener('document:keydown', ['$event'])
   handleKeyPress(event: any) {
@@ -30,24 +29,29 @@ export class RightSidebarComponent implements OnChanges {
   //   return JSON.stringify(val);
   // }
 
-  data$ = this.service.fetchId(1);
+  data$ = this.service.fetchId(8);
   
 
   handleClick() {
     this.close.emit();
   }
 
-  handleFirstToggle(event: MouseEvent) {
-    // this.data.agent.stopMalware = !this.data.agent.stopMalware;
+  handleFirstToggle(event: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
+    this.service.updateAgentConfig(id, !stopMalware, response).subscribe( () => {
+        this.data$ = this.service.fetchId(this.selectedId)
+      });
   }
 
-  handleSecondToggle(event: MouseEvent) {
-    // this.data.agent.response = !this.data.agent.response;
+  handleSecondToggle(event: MouseEvent, id: number, stopMalware: boolean, response: boolean) {
+    this.service.updateAgentConfig(id, stopMalware, !response).subscribe( () => {
+      this.data$ = this.service.fetchId(this.selectedId)
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('selectedId' in changes) {
       // this.data$ = this.service.fetchId(this.selectedId).subscribe(val => console.log(val));
+      // console.log("changed")
       this.data$ = this.service.fetchId(this.selectedId)
     }
   }

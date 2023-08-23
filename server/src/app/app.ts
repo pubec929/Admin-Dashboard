@@ -11,13 +11,6 @@ app.get('/', (req: Request, res: Response): Response => {
   return res.json({ message: 'Hello, World Wide Web!' });
 });
 
-// function removeAgent(array: endpoint[]) {
-//   return array.map(element => {
-//     const tmp = {...element}
-//     delete tmp.agent;
-//     return tmp
-//   })
-// }
 function getId(id: number) {
   for (let element of data) {
     if (element.endpoint.id === id) return element;
@@ -33,6 +26,30 @@ function getAllEndpoints() {
   }
   return endpoints;
 }
+
+app.put("/agents/:id/stopMalware/response", (req: Request, res: Response): void => {
+  const id: number = parseInt(req.params.id);
+  const stopMalware = req.body.body.stopMalware;
+  const response = req.body.body.response;
+
+  let endpointId;
+  for (let element of data) {
+    if (element.agent.id === id) {
+      element.agent.stopMalware = stopMalware;
+      element.agent.response = response;
+      endpointId = element.endpoint.id;
+      break
+    }
+  }
+  if (!endpointId) {
+    res.status(404).json({message: "Invalid id"})
+  } else {
+    const agent = getId(endpointId).agent 
+    res.json({stopMalware: agent.stopMalware, response: agent.response});
+  }
+})
+
+
 
 app.put("/endpoints/:id/tags", (req: Request, res: Response): void => {
   const id = parseInt(req.params.id)
@@ -124,7 +141,7 @@ interface endpoint {
 }
 
 interface agent {
-  id: string;
+  id: number;
   setupId: string;
   version: string;
   zuletztGesehen: string;
@@ -137,9 +154,10 @@ interface agent {
 
 
 let tmp = 1;
+let agentTmp = 100
 
 const agent: agent = {
-  id: 'as9f89gh8ad9gh7s8d7g8d7f897gs8a9sj132423',
+  id: agentTmp++,
   setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
   version: '20230124_1155',
   zuletztGesehen: '24.01.2023, 13:09:02',
@@ -162,7 +180,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
     },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   
   {   endpoint: {
@@ -176,7 +203,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-      agent: structuredClone(agent)
+      agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint: {
@@ -190,7 +226,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -204,7 +249,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -218,7 +272,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -232,7 +295,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -246,7 +318,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -260,7 +341,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -274,7 +364,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -288,7 +387,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -302,7 +410,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -316,7 +433,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -330,7 +456,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -344,7 +479,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -358,7 +502,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -372,7 +525,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -386,7 +548,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -400,7 +571,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -414,7 +594,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -428,7 +617,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -442,7 +640,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -456,7 +663,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -470,7 +686,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -484,7 +709,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -498,7 +732,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -512,7 +755,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -526,7 +778,16 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
       },
-    agent: structuredClone(agent)
+    agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   },
   {    
    endpoint:{
@@ -540,6 +801,15 @@ const data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
     },
- agent: structuredClone(agent)
+ agent: {
+      id: agentTmp++,
+      setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
+      version: '20230124_1155',
+      zuletztGesehen: '24.01.2023, 13:09:02',
+      letztesUpdate: '01.01.2000, 01:00:03',
+      analystSession: 'Inaktiv',
+      stopMalware: true,
+      response: true,
+}
   }
 ]
