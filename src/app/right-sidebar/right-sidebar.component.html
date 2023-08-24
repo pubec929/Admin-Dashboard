@@ -54,7 +54,7 @@
     </div>
   </div>
   <div class="footer" *ngIf="display.agent">
-    <button mat-flat-button (click)="handleDelete($event, display.endpoint.name, display.endpoint.status, display.agent.id)" color="warn">
+    <button mat-flat-button class="btn-delete" (click)="handleDelete($event, display.endpoint.name, display.endpoint.status, display.agent.id)" color="warn">
       <mat-icon>delete</mat-icon>
       <p>Agent deinstallieren</p>
     </button>
