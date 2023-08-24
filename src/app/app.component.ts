@@ -8,8 +8,7 @@ import { EndpointDataService } from './services/endpoint-data.service';
 })
 
 export class AppComponent {
-  selectedId:number = 0;
- 
+
   constructor(public service: EndpointDataService) {}
 
   // handleKeyPress(event: any) {
@@ -17,11 +16,10 @@ export class AppComponent {
   // }
 
   itemSelected(id:number){
-    this.selectedId = id;
+    this.service.selectedId.set(id);
   }
 
   close(_: boolean) {
-    console.log("event received")
-    this.selectedId = 0;
+    this.service.selectedId.set(0);
   }
 }

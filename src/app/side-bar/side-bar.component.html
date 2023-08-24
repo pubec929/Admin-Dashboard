@@ -7,10 +7,10 @@
         </mat-expansion-panel-header>
         <div class="nav-container">
             <div class="test">
-              <app-nav-element iconName="dashboard" text="Dashboard" [isFilled]="true"></app-nav-element>
-              <app-nav-element iconName="device_hub" text="Endpunkte" [isHighlighted]="true"></app-nav-element>
-              <app-nav-element iconName="shield" text="Incidents" ></app-nav-element>
-              <app-nav-element iconName="traffic" text="Handlungsempfehlungen"></app-nav-element>
+              <app-nav-element class="nav-item" routerLink="dashboard" routerLinkActive="highlighted" iconName="dashboard" text="Dashboard" [isFilled]="true"></app-nav-element>
+              <app-nav-element class="nav-item" routerLink="endpoints" routerLinkActive="highlighted" iconName="device_hub" text="Endpunkte"></app-nav-element>
+              <app-nav-element class="nav-item" iconName="shield" text="Incidents" ></app-nav-element>
+              <app-nav-element class="nav-item" iconName="traffic" text="Handlungsempfehlungen"></app-nav-element>
             </div>
         </div>
     </mat-expansion-panel>
@@ -22,7 +22,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="nav-container">
-            <app-nav-element iconName="mail" text="Exchange Sicherheit"></app-nav-element>
+            <app-nav-element class="nav-item" iconName="mail" text="Exchange Sicherheit"></app-nav-element>
         </div>
   </mat-expansion-panel>
 
@@ -33,9 +33,9 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
     <div class="nav-container">
-        <app-nav-element iconName="supervised_user_circle" text="Benutzer"></app-nav-element>
-        <app-nav-element iconName="assignment_ind" text="Rollen"></app-nav-element>
-        <app-nav-element iconName="account_tree" text="Organisationseinheiten"></app-nav-element>
+        <app-nav-element class="nav-item" iconName="supervised_user_circle" text="Benutzer"></app-nav-element>
+        <app-nav-element class="nav-item" iconName="assignment_ind" text="Rollen"></app-nav-element>
+        <app-nav-element class="nav-item" iconName="account_tree" text="Organisationseinheiten"></app-nav-element>
     </div>
 </mat-expansion-panel>
 </div>

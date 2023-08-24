@@ -1,7 +1,16 @@
-.container {
+:host{
     display: flex;
     height: 100%;
     width: 95%;
+    flex-direction: column;
+    padding: 0 1rem 1rem 1rem;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
     flex-direction: column;
     padding: 0 1rem 1rem 1rem;
 }

@@ -9,5 +9,4 @@ export class NavElementComponent {
   @Input() text!: string;
   @Input() iconName!: string;
   @Input() isFilled = false;
-  @Input() isHighlighted = false;
 }

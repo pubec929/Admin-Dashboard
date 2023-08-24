@@ -1,16 +1,44 @@
 <div class="modal-container">
-    <h1 mat-dialog-title>Agent-Deinstalltion vormerken</h1>
-    <div mat-dialog-content>
-        <p>Der Agent ist gerade nicht erreichbar. Eine Deinstallation kann zu einem späteren Zeitpunkt durchgeführt werden, sobald das Geräte online ist</p>
-        <p>Durch die Deinstallation kann für den ausgewählten Endpunkt <strong>{{data.name}}</strong> keine Überwachung
-            gewährleistet werden. Schadcode wird nicht mehr automatisch gestoppt und unsere Analysten 
-            können keine Respond-Dienstleistungen auf dem Endpunkt durchführen.
-        </p>
-        <mat-checkbox (click)="onClick($event)" [checked]="isChecked" color="primary"></mat-checkbox>
-        <p>{{isChecked}}</p>
-    </div>
-    <div mat-dialog-actions>
-        <button class="dialog-cancel" mat-flat-button mat-dialog-close>Abbrechen</button>
-        <button [mat-dialog-close]="isChecked"  class="dialog-accept" mat-flat-button mat-dialog-close>Deinstallationsauftrag absenden</button>
-    </div>
+  <div class="header">
+    {{
+      data.status == "online"
+        ? "Agent Deinstallieren"
+        : "Agent Deinstallation vormerken"
+    }}
+  </div>
+  <div class="main">
+    <p *ngIf="data.status !== 'online'">
+      Der Agent ist gerade nicht erreichbar. Eine Deinstallation kann zu einem
+      späteren Zeitpunkt durchgeführt werden, sobald das Geräte online ist
+    </p>
+    <p>
+      Durch die Deinstallation kann für den ausgewählten Endpunkt
+      <strong>{{ data.name }}</strong> keine Überwachung gewährleistet werden.
+      Schadcode wird nicht mehr automatisch gestoppt und unsere Analysten können
+      keine Respond-Dienstleistungen auf dem Endpunkt durchführen.
+    </p>
+    <mat-checkbox
+      (click)="onClick($event)"
+      [checked]="isChecked"
+      color="primary"
+      >Endpunkt jetzt aus der Endpunktliste entfernen</mat-checkbox
+    >
+  </div>
+  <div class="bottom">
+    <button
+      [mat-dialog-close]="{ confirmed: false, checked: isChecked }"
+      class="dialog-cancel"
+      mat-flat-button
+    >
+      Abbrechen
+    </button>
+    <button
+      [mat-dialog-close]="{ confirmed: true, checked: isChecked }"
+      class="dialog-accept"
+      mat-flat-button
+      mat-dialog-close
+    >
+      {{data.status === "online" ? "Deinstallieren": "Deinstallationsauftrag absenden"}}
+    </button>
+  </div>
 </div>

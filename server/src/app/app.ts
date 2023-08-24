@@ -3,6 +3,7 @@ import express = require('express');
 const cors = require('cors')
 
 const app = express();
+console.log("test")
 
 app.use(express.json());
 app.use(cors());
@@ -81,7 +82,6 @@ app.get("/endpoints", (req: Request, res: Response): void => {
   const take = ("take" in req.query) ? parseInt(req.query.take.toString()) : 25;
 
   const endpoints = getAllEndpoints();  
-
   if (skip > endpoints.length) {
     res.status(404).json({ message: `Skip Wert ${skip} ist größer als die Länge des EndpointArrays`})
   } else {
@@ -120,7 +120,7 @@ app.delete('/endpoints/:id', (req: Request, res: Response): void => {
   if (lengthBefore === data.length) {
     res.status(404).json({ message: "Invalid id"})
   } else {
-    res.status(200);
+    res.status(200).json({ message: ""});
   }
 })
 
@@ -128,9 +128,10 @@ app.delete('/endpoints/:id', (req: Request, res: Response): void => {
 app.delete("/agents/:id", (req: Request, res: Response): void => {
   const id = parseInt(req.params.id);
   for (let element of data) {
+    if (!("agent" in element)) continue;
     if (element.agent.id === id) {
       delete element.agent;
-      res.status(200);
+      res.status(200).json({ message: ""});
       return;
     }
   }
@@ -140,7 +141,7 @@ app.delete("/agents/:id", (req: Request, res: Response): void => {
 const start = async (): Promise<void> => {
   try {
     app.listen(3000, 'localhost', () => {
-      console.log('Server started on port 3000');
+      console.log('Server started on port 3000🤖');
     });
   } catch (error) {
     console.error(error);

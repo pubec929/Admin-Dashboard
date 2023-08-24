@@ -44,13 +44,8 @@ interface response {
 export class EndpointDataService {
   constructor(private httpClient: HttpClient) {}
 
-  // getEndpoint(id: number) {
-  //   for (const element of this.data()!) {
-  //     if (element.id === id) return element;
-  //   }
-  //   return undefined;
-  // }
   refetch = signal(false);
+  selectedId = signal(0);
 
   fetchId(id: number) {
     const url = `http://localhost:3000/endpoints/${id}`
@@ -70,5 +65,15 @@ export class EndpointDataService {
   updateAgentConfig(id: number, stopMalware: boolean, response: boolean) {
     const url = `http://localhost:3000/agents/${id}/stopMalware/response`
     return this.httpClient.put<any>(url, {body: {stopMalware, response}});
+  }
+
+  deleteEndpoint(id: number) {
+    const url = `http://localhost:3000/endpoints/${id}`
+    return this.httpClient.delete<any>(url, {})
+  }
+
+  deleteAgent(id: number) {
+    const url = `http://localhost:3000/agents/${id}`
+    return this.httpClient.delete<any>(url, {})
   }
 }

@@ -33,6 +33,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     DetailsElementComponent,
     TagEditorComponent,
     DialogInfoComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,

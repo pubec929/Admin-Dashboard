@@ -36,10 +36,18 @@
     border-bottom: 1px solid rgb(151, 151, 151);
 }
 
+.highlighted {
+    color: #5691d1;
+}
+
 .expansion-header {
     height: auto !important;
     padding-top: 1.5rem;
     padding-bottom: 10px;
+}
+
+.nav-item:hover {
+    cursor: pointer;
 }
 
 

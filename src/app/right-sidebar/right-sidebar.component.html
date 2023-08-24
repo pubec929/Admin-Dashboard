@@ -20,10 +20,10 @@
         <app-details-element key="Organisationseinheit" [value]="display.endpoint.organisationUnit"></app-details-element>
         <!-- <app-details-element key="Tag" [value]="display.endpoint.tag"></app-details-element>  -->
 
-        <app-tag-editor [selectedId]="selectedId" [tags]="display.endpoint.tag"></app-tag-editor>
+        <app-tag-editor [selectedId]="service.selectedId()" [tags]="display.endpoint.tag"></app-tag-editor>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+    <mat-expansion-panel *ngIf="display.agent"  class="expansion-panel" [expanded]="true">
       <mat-expansion-panel-header class="expansion-header">
         <mat-panel-title class="panel-title"> Agent </mat-panel-title>
       </mat-expansion-panel-header>
@@ -36,7 +36,7 @@
         <app-details-element key="Analyst Session" [value]="display.agent.analystSession"></app-details-element>
       </div>
     </mat-expansion-panel>
-    <mat-expansion-panel class="expansion-panel" [expanded]="true">
+    <mat-expansion-panel class="expansion-panel" [expanded]="true" *ngIf="display.agent">
       <mat-expansion-panel-header class="expansion-header">
         <mat-panel-title class="panel-title">
           Agent Konfiguration
@@ -49,11 +49,15 @@
         class="slide-toggle">Response durch Analysten</mat-slide-toggle>
       </div> 
     </mat-expansion-panel>
+    <div class="msg-container" *ngIf="!display.agent">
+      Auf dem Endpunkt ist kein Agent installiert
+    </div>
   </div>
-  <div class="footer">
-    <button mat-flat-button (click)="handleDelete($event, display.endpoint.name, display.endpoint.status)" color="warn">
+  <div class="footer" *ngIf="display.agent">
+    <button mat-flat-button (click)="handleDelete($event, display.endpoint.name, display.endpoint.status, display.agent.id)" color="warn">
       <mat-icon>delete</mat-icon>
       <p>Agent deinstallieren</p>
     </button>
   </div>  
+  
 </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, Input, computed, effect} from '@angular/core';
+import { Component, computed, effect, signal, OnDestroy} from '@angular/core';
 import { EndpointDataService} from '../services/endpoint-data.service';
 import { map, tap } from 'rxjs';
 
@@ -7,10 +7,7 @@ import { map, tap } from 'rxjs';
   templateUrl: './main-content.component.html',
   styleUrls: ['./main-content.component.css'],
 })
-export class MainContentComponent {
-  @Output() itemSelected: EventEmitter<number> = new EventEmitter();
-  @Input() selectedId: number = 0;
-
+export class MainContentComponent implements OnDestroy{
   constructor(public service: EndpointDataService) {
     effect(() => {
       this.service.refetch();
@@ -37,8 +34,8 @@ export class MainContentComponent {
 
   pageSize = 25;
   pageIndex = 0;
-  total:number = 0;
-  pageSizeOptions = [5, 10, 25, this.total];
+  total = signal(0);
+  pageSizeOptions = computed(() => [5, 10, 25, this.total()]);
 
   showPageSizeOptions = true;
   showFirstLastButtons = true;
@@ -49,7 +46,7 @@ export class MainContentComponent {
 
   load(skip:number, take:number){
     return this.service.fetchData(skip * take, take)
-    .pipe(tap(resp=> this.total = resp.metadata.totalItems ), map(resp=> resp.content))  
+    .pipe(tap(resp=> this.total.set(resp.metadata.totalItems)), map(resp=> resp.content))  
   }
   
   download(_: any) {
@@ -66,7 +63,10 @@ export class MainContentComponent {
 
   rowSelected(item: any) {
     // this.service.isClicked = item.id !== this.service.isClicked ? item.id : 0;
-    this.selectedId = item.id !== this.selectedId ? item.id : 0;
-    this.itemSelected.emit(this.selectedId);
+    this.service.selectedId.set(item.id !== this.service.selectedId() ? item.id : 0);
+  }
+
+  ngOnDestroy() {
+    this.service.selectedId.set(0);
   }
 }

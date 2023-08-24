@@ -72,3 +72,11 @@ p {
 .slide-toggle {
     margin: 5px;
 }
+
+.msg-container {
+    text-align: center;
+    font-size: 1.25rem;
+    padding: 20px 10px;
+    white-space: nowrap;
+    color: red;
+}

@@ -17,6 +17,7 @@
   display: flex;
   justify-content: center;
   border-top: 1px solid lightgrey;
+  /* width: 100%; */
 }
 
 .side-bar-right {
