@@ -80,3 +80,29 @@ p {
     white-space: nowrap;
     color: red;
 }
+
+.btn-delete {
+    position: relative;
+    isolation: isolate;
+}
+
+.btn-delete::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: red;
+    inset: 0;
+  
+    scale: 0 1;
+    transform-origin: right;
+    transition: scale 600ms;
+}
+
+.btn-delete:hover {
+    color: white !important; 
+}
+
+.btn-delete:hover::after {
+    transform-origin: left;
+    scale: 1 1;
+  }
