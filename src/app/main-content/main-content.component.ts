@@ -11,7 +11,7 @@ export class MainContentComponent implements OnDestroy{
   constructor(public service: EndpointDataService) {
     effect(() => {
       this.service.refetch();
-      this.visibleData$ = this.load(this.pageIndex, this.pageSize); 
+      this.visibleData$ = this.load(this.pageIndex(), this.pageSize(), this.query()); 
       console.log("refetch");
     })
   }
@@ -32,8 +32,10 @@ export class MainContentComponent implements OnDestroy{
     { value: 'option-2', viewValue: 'Test 3' },
   ];
 
-  pageSize = 25;
-  pageIndex = 0;
+  query = signal("");
+
+  pageSize = signal(25);
+  pageIndex = signal(0);
   total = signal(0);
   pageSizeOptions = computed(() => [5, 10, 25, this.total()]);
 
@@ -42,10 +44,10 @@ export class MainContentComponent implements OnDestroy{
 
   pageEvent: any;
 
-  visibleData$ = this.load(this.pageIndex, this.pageSize); 
+  visibleData$ = this.load(this.pageIndex(), this.pageSize()); 
 
-  load(skip:number, take:number){
-    return this.service.fetchData(skip * take, take)
+  load(skip:number, take:number, query: string=""){
+    return this.service.fetchData(skip * take, take, query)
     .pipe(tap(resp=> this.total.set(resp.metadata.totalItems)), map(resp=> resp.content))  
   }
   
@@ -55,15 +57,35 @@ export class MainContentComponent implements OnDestroy{
   
   handlePageEvent(e: any) {
     this.pageEvent = e;
-    this.pageSize = e.pageSize;
-    this.pageIndex = e.pageIndex;
-    
-    this.visibleData$ = this.load(e.pageIndex, e.pageSize);
+    this.pageSize.set(e.pageSize);
+    this.pageIndex.set(e.pageIndex);
   }
 
   rowSelected(item: any) {
     // this.service.isClicked = item.id !== this.service.isClicked ? item.id : 0;
     this.service.selectedId.set(item.id !== this.service.selectedId() ? item.id : 0);
+  }
+
+  debounce(cb: any, delay = 250) {
+    let timeout: any;
+  
+    return (...args: any[]) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        cb(...args)
+      }, delay)
+    }
+  }
+
+  search = this.debounce((query: string) => {
+    this.query.set(query)
+    this.pageIndex.set(0);
+    this.pageSize.set(25);
+  }, 500)
+
+
+  onInput(event: any) {
+    this.search(event.target.value)
   }
 
   ngOnDestroy() {

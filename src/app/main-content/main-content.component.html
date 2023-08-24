@@ -26,7 +26,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Suchen</mat-label>
-                <input matInput placeholder="Placeholder">
+                <input matInput placeholder="" (input)="onInput($event)">
                 <mat-icon matSuffix class='material-icons-outlined'>search</mat-icon>
               </mat-form-field>
         </div>
@@ -65,11 +65,11 @@
                class="demo-paginator"
                (page)="handlePageEvent($event)"
                [length]="total()"
-               [pageSize]="pageSize"
+               [pageSize]="pageSize()"
                [showFirstLastButtons]="showFirstLastButtons"
                [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions() : []"
               
-               [pageIndex]="pageIndex"
+               [pageIndex]="pageIndex()"
                aria-label="Select page">
     </mat-paginator>
     </div>

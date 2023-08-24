@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import express = require('express');
-const cors = require('cors')
+const cors = require('cors');
 
 const app = express();
-console.log("test")
 
 app.use(express.json());
 app.use(cors());
@@ -21,122 +20,137 @@ function getId(id: number) {
 
 // returns all endpoints
 function getAllEndpoints() {
-  let endpoints = []
+  let endpoints = [];
   for (let element of data) {
-    endpoints.push({...element.endpoint});
+    endpoints.push({ ...element.endpoint });
   }
   return endpoints;
 }
 
-app.put("/agents/:id/stopMalware/response", (req: Request, res: Response): void => {
-  const id: number = parseInt(req.params.id);
-  const stopMalware = req.body.body.stopMalware;
-  const response = req.body.body.response;
+app.put(
+  '/agents/:id/stopMalware/response',
+  (req: Request, res: Response): void => {
+    const id: number = parseInt(req.params.id);
+    const stopMalware = req.body.body.stopMalware;
+    const response = req.body.body.response;
 
-  let endpointId;
-  for (let element of data) {
-    if (element.agent.id === id) {
-      element.agent.stopMalware = stopMalware;
-      element.agent.response = response;
-      endpointId = element.endpoint.id;
-      break
+    let endpointId;
+    for (let element of data) {
+      if (element.agent.id === id) {
+        element.agent.stopMalware = stopMalware;
+        element.agent.response = response;
+        endpointId = element.endpoint.id;
+        break;
+      }
+    }
+    if (!endpointId) {
+      res.status(404).json({ message: 'Invalid id' });
+    } else {
+      const agent = getId(endpointId).agent;
+      res.json({ stopMalware: agent.stopMalware, response: agent.response });
     }
   }
-  if (!endpointId) {
-    res.status(404).json({message: "Invalid id"})
-  } else {
-    const agent = getId(endpointId).agent 
-    res.json({stopMalware: agent.stopMalware, response: agent.response});
-  }
-})
+);
 
-
-
-app.put("/endpoints/:id/tags", (req: Request, res: Response): void => {
-  const id = parseInt(req.params.id)
+app.put('/endpoints/:id/tags', (req: Request, res: Response): void => {
+  const id = parseInt(req.params.id);
   const updatedTags = req.body.body;
   // implement data validation
   // let currentEndpoint = getId(id)
   // if (!currentEndpoint) {
   //   res.status(404).json({message: "Invalid id"})
-  // } 
+  // }
   // currentEndpoint.endpoint.tag = updatedTags;
-  let updatedEndpoint: endpoint; 
+  let updatedEndpoint: endpoint;
   for (let element of data) {
     if (element.endpoint.id === id) {
       element.endpoint.tag = updatedTags;
-      updatedEndpoint = element.endpoint
-      break
+      updatedEndpoint = element.endpoint;
+      break;
     }
   }
   if (!updatedEndpoint) {
-    res.status(404).json({message: "Invalid id"})
+    res.status(404).json({ message: 'Invalid id' });
   } else {
     res.json(updatedEndpoint.tag);
   }
-})
+});
 
+app.get('/endpoints', (req: Request, res: Response): void => {
+  const skip = 'skip' in req.query ? parseInt(req.query.skip.toString()) : 0;
+  const take = 'take' in req.query ? parseInt(req.query.take.toString()) : 25;
+  const keyword = "search" in req.query ? req.query.search.toString() : ""
 
-app.get("/endpoints", (req: Request, res: Response): void => {
-  const skip = ('skip' in req.query) ? parseInt(req.query.skip.toString()) : 0;
-  const take = ("take" in req.query) ? parseInt(req.query.take.toString()) : 25;
+  let endpoints = getAllEndpoints();
+  
+  if (keyword !== "") {
+    console.log(endpoints)
+    endpoints = search(endpoints, keyword)
+  }
+  // if theres search keyword in the query. Search in the data
 
-  const endpoints = getAllEndpoints();  
   if (skip > endpoints.length) {
-    res.status(404).json({ message: `Skip Wert ${skip} ist größer als die Länge des EndpointArrays`})
+    res
+      .status(404)
+      .json({
+        message: `Skip Wert ${skip} ist größer als die Länge des EndpointArrays`,
+      });
   } else {
     const queryResponse = {
       metadata: {
         skip: skip,
         take: take,
-        totalItems: endpoints.length
+        search: keyword,
+        totalItems: endpoints.length,
       },
-      content: endpoints.slice(skip, take + skip)
-    }
+      content: endpoints.slice(skip, take + skip),
+    };
     res.json(queryResponse);
   }
-})
+});
 
 // returns one endpoint specifiec to id
 app.get('/endpoints/:id', (req: Request, res: Response): void => {
-  const id = parseInt(req.params.id)
-  const selectedItem = getId(id) 
+  const id = parseInt(req.params.id);
+  const selectedItem = getId(id);
   if (selectedItem) {
     // const delay = new Date(new Date().getTime() + 2 * 1000);
     // while(delay > new Date()){}
     res.json(selectedItem);
   } else {
-    res.status(404).json({ message: `Endpoint mit der ID ${id} wurde nicht gefunden...`})
-  } 
+    res
+      .status(404)
+      .json({ message: `Endpoint mit der ID ${id} wurde nicht gefunden...` });
+  }
 });
 
 // delete endpoint and agent of data array
 app.delete('/endpoints/:id', (req: Request, res: Response): void => {
   const id = parseInt(req.params.id);
-  const lengthBefore = data.length
+  const lengthBefore = data.length;
   data = data.filter((val) => {
     return val.endpoint.id !== id;
-  })
+  });
   if (lengthBefore === data.length) {
-    res.status(404).json({ message: "Invalid id"})
+    res.status(404).json({ message: 'Invalid id' });
   } else {
-    res.status(200).json({ message: ""});
+    res.status(200).json({ message: '' });
   }
-})
+});
 
-// delete agent of data object 
-app.delete("/agents/:id", (req: Request, res: Response): void => {
+// delete agent of data object
+app.delete('/agents/:id', (req: Request, res: Response): void => {
   const id = parseInt(req.params.id);
   for (let element of data) {
-    if (!("agent" in element)) continue;
+    if (!('agent' in element)) continue;
     if (element.agent.id === id) {
       delete element.agent;
-      res.status(200).json({ message: ""});
+      res.status(200).json({ message: '' });
       return;
     }
   }
-  res.status(404).json({ message: "Invalid id"})
-})
+  res.status(404).json({ message: 'Invalid id' });
+});
 
 const start = async (): Promise<void> => {
   try {
@@ -149,8 +163,7 @@ const start = async (): Promise<void> => {
   }
 };
 
-void start();
-
+// interfaces
 interface data {
   endpoint: endpoint;
   agent: agent;
@@ -179,27 +192,34 @@ interface agent {
   response: boolean;
 }
 
+void start();
+function tagsInclude(array: string[], query: string) {
+  query = query.toLowerCase().trim();
+  return array.filter((val) => {
+    return val.toLowerCase().includes(query);
+  });
+}
 
+function search(array: endpoint[], query: string) {
+  query = query.toLowerCase().trim();
+  return array.filter((val) => {
+    console.log(val)
+    return (
+      val.name.toLowerCase().includes(query) ||
+      val.status.toLowerCase().includes(query) ||
+      tagsInclude(val.tag, query).length !== 0
+    );
+  });
+}
 
 let tmp = 1;
-let agentTmp = 100
-
-const agent: agent = {
-  id: agentTmp++,
-  setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
-  version: '20230124_1155',
-  zuletztGesehen: '24.01.2023, 13:09:02',
-  letztesUpdate: '01.01.2000, 01:00:03',
-  analystSession: 'Inaktiv',
-  stopMalware: true,
-  response: true,
-};
+let agentTmp = 100;
 
 let data: data[] = [
   {
     endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alex',
       status: 'online',
       lastUpdate: '01',
       version: '1.0.1',
@@ -217,12 +237,13 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  
-  {   endpoint: {
+
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '02',
       version: '1.0.1',
@@ -230,8 +251,8 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
-      agent: {
+    },
+    agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
       version: '20230124_1155',
@@ -240,12 +261,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint: {
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '03',
       version: '1.0.1',
@@ -253,7 +274,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -263,12 +284,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '04',
       version: '1.0.1',
@@ -276,7 +297,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -286,12 +307,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '05',
       version: '1.0.1',
@@ -299,7 +320,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -309,12 +330,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '06',
       version: '1.0.1',
@@ -322,7 +343,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -332,12 +353,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '07',
       version: '1.0.1',
@@ -345,7 +366,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -355,12 +376,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '08',
       version: '1.0.1',
@@ -368,7 +389,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -378,12 +399,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '09',
       version: '1.0.1',
@@ -391,7 +412,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -401,12 +422,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '10',
       version: '1.0.1',
@@ -414,7 +435,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -424,12 +445,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '11',
       version: '1.0.1',
@@ -437,7 +458,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -447,12 +468,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '12',
       version: '1.0.1',
@@ -460,7 +481,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -470,12 +491,12 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
-      name: 'Simon',
+      name: 'alexis',
       status: 'online',
       lastUpdate: '13',
       version: '1.0.1',
@@ -483,7 +504,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -493,10 +514,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -506,7 +527,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -516,10 +537,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -529,7 +550,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -539,10 +560,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -552,7 +573,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -562,10 +583,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -575,7 +596,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -585,10 +606,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -598,7 +619,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -608,10 +629,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -621,7 +642,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -631,10 +652,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -644,7 +665,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -654,10 +675,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -667,7 +688,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -677,10 +698,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -690,7 +711,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -700,10 +721,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -713,7 +734,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -723,10 +744,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -736,7 +757,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -746,10 +767,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -759,7 +780,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -769,10 +790,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -782,7 +803,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -792,10 +813,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -805,7 +826,7 @@ let data: data[] = [
       organisationUnit: '1412',
       kunde: 'Google',
       betriebsystem: 'Windows XP',
-      },
+    },
     agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
@@ -815,10 +836,10 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
+    },
   },
-  {    
-   endpoint:{
+  {
+    endpoint: {
       id: tmp++,
       name: 'Simon',
       status: 'online',
@@ -829,7 +850,7 @@ let data: data[] = [
       kunde: 'Google',
       betriebsystem: 'Windows XP',
     },
- agent: {
+    agent: {
       id: agentTmp++,
       setupId: '24hjkh23h5hkj9jh08h7gjoihfoigu9090',
       version: '20230124_1155',
@@ -838,6 +859,7 @@ let data: data[] = [
       analystSession: 'Inaktiv',
       stopMalware: true,
       response: true,
-}
-  }
-]
+    },
+  },
+];
+

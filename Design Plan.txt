@@ -55,7 +55,7 @@ Todo-Liste(16.08.2023/12:08):
     -----> Backend <-----
     -> Server einrichten ✅
     -> Erste Route für allgemeine Daten erstellen ✅
-    -> Skip&Take Prinzip als neue Route für Paging
+    -> Skip&Take Prinzip als neue Route für Paging ✅
     -> Suche
         > Frontend event
         > Backend Daten filtern

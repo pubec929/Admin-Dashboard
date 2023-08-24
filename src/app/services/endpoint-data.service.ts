@@ -33,6 +33,7 @@ interface response {
   metadata: {
     skip: number,
     take: number,
+    search: string,
     totalItems: number
   },
   content: endpoint[]
@@ -52,9 +53,9 @@ export class EndpointDataService {
     return this.httpClient.get<data>(url, {});
   }
 
-  fetchData(skip=0, take=25) {
+  fetchData(skip=0, take=25, search="") {
     const url = "http://localhost:3000/endpoints"
-    return this.httpClient.get<response>(url, {params: {skip: skip, take: take}});
+    return this.httpClient.get<response>(url, {params: {skip, take, search}});
   }
 
   updateTags(id: number, tags: string[]) {
